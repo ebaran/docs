@@ -71,6 +71,10 @@ To configure a node for one of the other networks, pass in the name of the netwo
 
 Optionally, to enter the container as the root user and control the node, run the  `sandbox enter` command. This gives you full control over your node and allows you to do things like create a private network[LINK].
 
+If the `-s` flag is not passed when running `sandbox up` this will boot from a snapshot, meaning that you are not engaging in the standard node sync process and not verifying the history of the ledger from inception. For testing purposes, this should not be a concern.
+
+`sandbox down` will tear down the sandbox environment and `sandbox up` will start it back up again from the where the node left off. If you do this, your node will take some time to catch back up to the rest of the network as it is not pulling from a snapshot anymore, but rather picking up from wherever it left off when you tore it down.
+
 ## 3. Run your own node
 
 !!! info
