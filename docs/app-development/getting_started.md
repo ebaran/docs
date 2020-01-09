@@ -50,16 +50,26 @@ Known available services: [Purestake API](https://developer.purestake.io/)
 ## 2. Bootstrap from S3
 
 !!! info
+	- Very quick to get a node up and running using docker.
 	- Recommended if you eventually want to run your own node, but you also want to start developing right away.
+	- Simple interace to create and configure a node on any of the three major networks (MainNet, TestNet, Betanet)[LINK].
 	- Access to `goal`, `algokey`, and `kmd`.
 	- Compatible with all SDKs and RESTful interfaces for `algod` and `kmd`.
 	- Access to private networks.
+	- Has a tutorial feature that gives step by step instructions on making API calls, creating wallets and accounts and creating and broadcasting transactions.
 	- Great for experimentation, but not suitable for use in production. See warning below.
   
 !!! warning
-	Bootstrapping from a snapshot bypasses the normal node catchup procedure that cryptographically verifies the whole history of the blockchain - a procedure that is imperative to maintaining a healthy network. Therefore, this method is *only* recommended in the context of early stage application development to avoid catchup wait times and get started quickly. It should *never* be used to run a node in production or participate in consensus. Make sure that you migrate your application to a node that has undergone full catchup prior to launching your application in production.
+	This is a new development tool that is still in testing. Specifically, unless passed the `-s` flag when spinning up a node using `sandbox up`, Sandbox will pull from a snapshot. Meaning that this will bypass the normal node catchup procedure that cryptographically verifies the whole history of the blockchain - a procedure that is imperative to maintaining a healthy network. Therefore, this method is only recommended in the context of early stage application development to avoid catchup wait times and get started quickly. It should never be used to run a node in production or participate in consensus. Make sure that you migrate your application to a node that has undergone full catchup prior to launching your application in production.
 
-Follow the directions here: https://github.com/algorand/sandbox
+Refer to the [instructions](https://github.com/algorand/sandbox) to get up and running.
+
+After installing [docker](https://docs.docker.com/v17.09/engine/installation/) on your machine, `cd` into your sandbox directory and run `sandbox up`. </br>
+This will spin up a docker container defaulting to the testnet binaries. Sandbox manages one active container at a time.</br>
+
+To configure a node for one of the other networks, pass in the name of the network after the `up` command `sandbox up [mainnet||testnet||betanet]`
+
+Optionally, to enter the container as the root user and control the node, run the  `sandbox enter` command. This gives you full control over your node and allows you to do things like create a private network[LINK].
 
 ## 3. Run your own node
 
@@ -84,20 +94,6 @@ Your algod access `token` is located here:
 ```bash
 $ cat $ALGORAND_DATA/algod.token
 ```
-
-## 4. Using Sandbox
-
-!!! info
-	- Very quick to get a node up and running using docker.
-	- Simple interace to create and configure a node on any of the three major networks (MainNet, TestNet, Betanet)[LINK].
-	- Has a tutorial feature that gives step by step instructions on making API calls, creating wallets and accounts and creating and broadcasting transactions.
-	- Access to `goal`, `algokey`, and `kmd`.
-	- Compatible with all SDKs and RESTful interfaces for `algod` and `kmd`.
-	- Great for experimentation, but not suitable for use in production. See warning below.
-!!! warning
-	This is a new development tool that is still in testing. Specifically, unless passed the `-s` flag when spinning up a node using `sandbox up`, Sandbox will pull from a snapshot. Meaning that this will bypass the normal node catchup procedure that cryptographically verifies the whole history of the blockchain - a procedure that is imperative to maintaining a healthy network. Therefore, this method is only recommended in the context of early stage application development to avoid catchup wait times and get started quickly. It should never be used to run a node in production or participate in consensus. Make sure that you migrate your application to a node that has undergone full catchup prior to launching your application in production
-
-Refer to the [instructions](https://github.com/algorand/sandbox) to get up and running.
 
 ## Side-by-Side Comparison
  || Use a third-party service | Bootstrap with s3 | Run your own node |
