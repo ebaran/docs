@@ -67,8 +67,7 @@ nav:
       - Java: 'reference/sdks/java.md'
       - JavaScript: 'reference/sdks/javascript.md'
       - Python: 'reference/sdks/python.md'
-- Community Projects:
-    - Sandbox: 'community/sandbox.md'
+- Community Projects: community.md
 - About:
     - License: 'about/license.md'
     - Release Notes: 'about/release_notes.md'

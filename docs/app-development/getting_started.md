@@ -85,6 +85,20 @@ Your algod access `token` is located here:
 $ cat $ALGORAND_DATA/algod.token
 ```
 
+## 4. Using Sandbox
+
+!!! info
+	- Very quick to get a node up and running using docker.
+	- Simple interace to create and configure a node on any of the three major networks (MainNet, TestNet, Betanet)[LINK].
+	- Has a tutorial feature that gives step by step instructions on making API calls, creating wallets and accounts and creating and broadcasting transactions.
+	- Access to `goal`, `algokey`, and `kmd`.
+	- Compatible with all SDKs and RESTful interfaces for `algod` and `kmd`.
+	- Great for experimentation, but not suitable for use in production. See warning below.
+!!! warning
+	This is a new development tool that is still in testing. Specifically, unless passed the `-s` flag when spinning up a node using `sandbox up`, Sandbox will pull from a snapshot. Meaning that this will bypass the normal node catchup procedure that cryptographically verifies the whole history of the blockchain - a procedure that is imperative to maintaining a healthy network. Therefore, this method is only recommended in the context of early stage application development to avoid catchup wait times and get started quickly. It should never be used to run a node in production or participate in consensus. Make sure that you migrate your application to a node that has undergone full catchup prior to launching your application in production
+
+Refer to the [instructions](https://github.com/algorand/sandbox) to get up and running.
+
 ## Side-by-Side Comparison
  || Use a third-party service | Bootstrap with s3 | Run your own node |
 :-- |:-------------:| :-------------: | :-------------: |
