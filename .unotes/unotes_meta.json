@@ -1,0 +1,86 @@
+{
+  "name": "",
+  "isOrdered": true,
+  "folders": {
+    "docs": {
+      "name": "docs",
+      "isOrdered": true,
+      "folders": {
+        "about": {
+          "name": "about",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "app-development": {
+          "name": "app-development",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "features": {
+          "name": "features",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "imgs": {
+          "name": "imgs",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "learn": {
+          "name": "learn",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "networks": {
+          "name": "networks",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "node": {
+          "name": "node",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "participate": {
+          "name": "participate",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "reference": {
+          "name": "reference",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "solutions": {
+          "name": "solutions",
+          "isOrdered": true,
+          "folders": {},
+          "files": {}
+        },
+        "tutorials": {
+          "name": "tutorials",
+          "isOrdered": true,
+          "folders": {},
+          "files": {
+            "Tutorial ASA": 0,
+            "example": 1
+          }
+        }
+      },
+      "files": {
+        "index": 0,
+        "community": 1
+      }
+    }
+  },
+  "files": {}
+}
