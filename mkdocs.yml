@@ -78,7 +78,7 @@ nav:
     - Example: 'solutions/example.md'
   - Tutorials:
     - Example: 'tutorials/example.md'
-    - ASA: 'tutorials/Tutorial ASA.md'
+    - ASA: 'tutorials/TutorialASA.md'
   
 
 theme: 
