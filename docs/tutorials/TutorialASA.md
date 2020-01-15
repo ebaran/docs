@@ -701,7 +701,100 @@ except Exception as e:
 ```
 
 ```go tab="Go"
+	// Insert code after Step 1 code
 
+	// Create an Asset
+	// uncomment these imports at the top
+	// 	-	b64 "encoding/base64"
+	//  - 	"github.com/algorand/go-algorand-sdk/transaction"
+	// 	-	"github.com/algorand/go-algorand-sdk/crypto"
+	fee := txParams.Fee
+	firstRound := txParams.LastRound
+	lastRound := txParams.LastRound + 1000
+	genHash := b64.StdEncoding.EncodeToString(txParams.GenesisHash)
+	genID := txParams.GenesisID
+
+	// Create an asset
+	// Set parameters for asset creation transaction
+	creator := pks[1]
+	assetName := "latinum"
+	unitName := "latinum"
+	assetURL := "https://path/to/my/asset/details"
+	assetMetadataHash := "thisIsSomeLength32HashCommitment"
+	defaultFrozen := false
+	decimals := uint32(0)
+	totalIssuance := uint64(1000)
+	manager := pks[2]
+	reserve := pks[2]
+	freeze := pks[2]
+	clawback := pks[2]
+	note := []byte(nil)
+	txn, err := transaction.MakeAssetCreateTxn(creator, fee, firstRound, lastRound, note,
+		genID, genHash, totalIssuance, decimals, defaultFrozen, manager, reserve, freeze, clawback,
+		unitName, assetName, assetURL, assetMetadataHash)
+	if err != nil {
+		fmt.Printf("Failed to make asset: %s\n", err)
+		return
+	}
+	fmt.Printf("Asset created AssetName: %s\n", txn.AssetConfigTxnFields.AssetParams.AssetName)
+
+	txid, stx, err := crypto.SignTransaction(sks[1], txn)
+	if err != nil {
+		fmt.Printf("Failed to sign transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID: %s\n", txid)
+	// Broadcast the transaction to the network
+	sendResponse, err := algodClient.SendRawTransaction(stx)
+	if err != nil {
+		fmt.Printf("failed to send transaction: %s\n", err)
+		return
+	}
+
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+
+	// Retrieve asset ID by grabbing the max asset ID
+	// from the creator account's holdings.
+	act, err := algodClient.AccountInformation(pks[1], txHeaders...)
+	if err != nil {
+		fmt.Printf("failed to get account information: %s\n", err)
+		return
+	}
+	assetID := uint64(0)
+	for i, _ := range act.AssetParams {
+		if i > assetID {
+			assetID = i
+		}
+	}
+	fmt.Printf("Asset ID from AssetParams: %d\n", assetID)
+
+	// Retrieve asset info.
+	assetInfo, err := algodClient.AssetInformation(assetID, txHeaders...)
+
+	// Print asset info for newly created asset.
+	PrettyPrint(assetInfo)
+	// terminal output should look similar to this
+
+	// terminal outout should loiok similar to this
+	// Asset created AssetName: latinum
+	// Transaction ID: 4P4ACUIZTWYGFPSRZ6BPD4P64XZCYN2ZOHO33N4V7TYE2KWWDA4Q
+	// Transaction 4P4ACUIZTWYGFPSRZ6BPD4P64XZCYN2ZOHO33N4V7TYE2KWWDA4Q confirmed in round 4308303
+	// Asset ID from AssetParams: 151771
+	// {
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"total": 1000,
+	// 	"decimals": 0,
+	// 	"defaultfrozen": false,
+	// 	"unitname": "latinum",
+	// 	"assetname": "latinum",
+	// 	"url": "https://path/to/my/asset/details",
+	// 	"metadatahash": "dGhpc0lzU29tZUxlbmd0aDMySGFzaENvbW1pdG1lbnQ=",
+	// 	"managerkey": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU",
+	// 	"reserveaddr": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU",
+	// 	"freezeaddr": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU",
+	// 	"clawbackaddr": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU"
+	// }
 ```
 
 Step 3 Configure Asset Manager
@@ -889,7 +982,57 @@ print(json.dumps(asset_info, indent=4))
 ```
 
 ```go tab="Go"
+	// Insert after Step 2's code
 
+	// Change Asset Manager from Account 2 to Account 1
+	manager = pks[1]
+	oldmanager := pks[2]
+	strictEmptyAddressChecking := true
+	txn, err = transaction.MakeAssetConfigTxn(oldmanager, fee, firstRound, lastRound, note, genID, genHash, assetID, manager, reserve, freeze, clawback, strictEmptyAddressChecking)
+	if err != nil {
+		fmt.Printf("Failed to send txn: %s\n", err)
+		return
+	}
+
+	txid, stx, err = crypto.SignTransaction(sks[2], txn)
+	if err != nil {
+		fmt.Printf("Failed to sign transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID: %s\n", txid)
+	// Broadcast the transaction to the network
+	sendResponse, err = algodClient.SendRawTransaction(stx)
+	if err != nil {
+		fmt.Printf("failed to send transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID raw: %s\n", sendResponse.TxID)
+
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+	// Retrieve asset info.
+	assetInfo, err = algodClient.AssetInformation(assetID, txHeaders...)
+	// Print asset info showing updated manager address.
+	PrettyPrint(assetInfo)
+
+	// Your terminal output should appear similar to this...
+
+	// 	Transaction HC6XR26GVMUZW26HBFHWU45Z4TI3XK4E7WR6IJ3BABPXVTLXI3UA confirmed in round 4309244
+
+	// {
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"total": 1000,
+	// 	"decimals": 0,
+	// 	"defaultfrozen": false,
+	// 	"unitname": "latinum",
+	// 	"assetname": "latinum",
+	// 	"url": "https://path/to/my/asset/details",
+	// 	"metadatahash": "dGhpc0lzU29tZUxlbmd0aDMySGFzaENvbW1pdG1lbnQ=",
+	// 	"managerkey": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"reserveaddr": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU",
+	// 	"freezeaddr": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU",
+	// 	"clawbackaddr": "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU"
+	// }
 ```
 
 Step 4 Opt-in to Receive Asset
@@ -1049,7 +1192,48 @@ if not holding:
 ```
 
 ```go tab="Go"
+	// Insert after step 3's code
 
+	// Account 3 opts in to receive latinum
+    // Use previously set transaction parameters and update sending address to account 3
+	txn, err = transaction.MakeAssetAcceptanceTxn(pks[3], fee, firstRound, lastRound, note, genID, genHash, assetID)
+	if err != nil {
+        fmt.Printf("Failed to send transaction MakeAssetAcceptanceTxn: %s\n", err)
+        return
+    }
+    txid, stx, err = crypto.SignTransaction(sks[3], txn)
+    if err != nil {
+        fmt.Printf("Failed to sign transaction: %s\n", err)
+        return
+	}
+
+    fmt.Printf("Transaction ID: %s\n", txid)
+    // Broadcast the transaction to the network
+    sendResponse, err = algodClient.SendRawTransaction(stx)
+    if err != nil {
+        fmt.Printf("failed to send transaction: %s\n", err)
+        return
+    }
+    fmt.Printf("Transaction ID raw: %s\n", sendResponse.TxID)
+
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+
+	act, err = algodClient.AccountInformation(pks[3], txHeaders...)
+    if err != nil {
+        fmt.Printf("failed to get account information: %s\n", err)
+        return
+	}
+	PrettyPrint(act.Assets[assetID])
+
+	// your terminal output should be similar to this...
+
+	// 	Transaction CYF2K2KLIQB7XE4KZY4ZET3KGRULPNNQWWMMK77WLPAOUN5M5VFA confirmed in round 4309336
+	// {
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"amount": 0,
+	// 	"frozen": false
+	// } 
 ```
 
 Step 5 Transfer an Asset
@@ -1188,7 +1372,52 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```go tab="Go"
+	// Insert after step 4's code
 
+	// Transfer an Asset
+	// Send  10 latinum from Account 1 to Account 3
+
+	sender := pks[1]
+	recipient := pks[3]
+	amount := uint64(10)
+	closeRemainderTo := ""
+	txn, err = transaction.MakeAssetTransferTxn(sender, recipient, closeRemainderTo, amount, fee, firstRound, lastRound, note,
+		genID, genHash, assetID)
+	if err != nil {
+		fmt.Printf("Failed to send transaction MakeAssetTransfer Txn: %s\n", err)
+		return
+	}
+	txid, stx, err = crypto.SignTransaction(sks[1], txn)
+	if err != nil {
+		fmt.Printf("Failed to sign transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID: %s\n", txid)
+	// Broadcast the transaction to the network
+	sendResponse, err = algodClient.SendRawTransaction(stx)
+	if err != nil {
+		fmt.Printf("failed to send transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID raw: %s\n", sendResponse.TxID)
+
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+
+	act, err = algodClient.AccountInformation(pks[3], txHeaders...)
+	if err != nil {
+		fmt.Printf("failed to get account information: %s\n", err)
+		return
+	}
+	PrettyPrint(act.Assets[assetID])
+	
+	// Your terminal output should look similar to this
+	// Transaction QAHANEYNUGYLKBDRM2BMLG63Y6PET2JNZGLJGH4Y2ROYTLEWZWGQ confirmed in round 4309416
+	// {
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"amount": 10,
+	// 	"frozen": false
+	// } 
 ```
 
 Step 6 Freeze an Asset
@@ -1276,7 +1505,48 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```go tab="Go"
+	// Insert after step 5's code
+	// Freeze an Asset
 
+	// The freeze address (Account 2) Freeze's asset for Account 3.
+	newFreezeSetting := true
+	target := pks[3]
+	txn, err = transaction.MakeAssetFreezeTxn(freeze, fee, firstRound, lastRound, note, genID, genHash, assetID, target, newFreezeSetting)
+	if err != nil {
+        fmt.Printf("Failed to send txn: %s\n", err)
+        return
+    }
+    txid, stx, err = crypto.SignTransaction(sks[2], txn)
+    if err != nil {
+        fmt.Printf("Failed to sign transaction: %s\n", err)
+        return
+	}
+    fmt.Printf("Transaction ID: %s\n", txid)
+    // Broadcast the transaction to the network
+    sendResponse, err = algodClient.SendRawTransaction(stx)
+    if err != nil {
+        fmt.Printf("failed to send transaction: %s\n", err)
+        return
+    }
+	fmt.Printf("Transaction ID raw: %s\n", sendResponse.TxID)
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+
+	act, err = algodClient.AccountInformation(pks[3], txHeaders...)
+    if err != nil {
+        fmt.Printf("failed to get account information: %s\n", err)
+        return
+	}
+	PrettyPrint(act.Assets[assetID])
+
+	// Your terminal output should look similar to this:
+
+	// Transaction RFFNJOQ3QSVJNTOXW2YYBD2RKJGCWCB6DY2JJZ4RSN5PJBFAKIPA confirmed in round 4309523
+	// {
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"amount": 10,
+	// 	"frozen": true
+	// } 	
 ```
 
 Step 7 Revoke an Asset
@@ -1429,7 +1699,64 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```go tab="Go"
+	// Insert after Step 6's code
+	// Revoke an Asset
+	// The clawback address (Account 2) revokes 10 latinum from Account 3 (target)
+	// and places it back with Account 1 (creator).
 
+	target = pks[3]
+	txn, err = transaction.MakeAssetRevocationTxn(clawback, target, creator, amount, fee, firstRound, lastRound, note,
+		genID, genHash, assetID)
+	if err != nil {
+		fmt.Printf("Failed to send txn: %s\n", err)
+		return
+	}
+	txid, stx, err = crypto.SignTransaction(sks[2], txn)
+	if err != nil {
+		fmt.Printf("Failed to sign transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID: %s\n", txid)
+	// Broadcast the transaction to the network
+	sendResponse, err = algodClient.SendRawTransaction(stx)
+	if err != nil {
+		fmt.Printf("failed to send transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID raw: %s\n", sendResponse.TxID)
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+
+	act, err = algodClient.AccountInformation(pks[3], txHeaders...)
+	if err != nil {
+		fmt.Printf("failed to get account information: %s\n", err)
+		return
+	}
+	fmt.Printf("target")
+	PrettyPrint(act.Assets[assetID])
+
+	act, err = algodClient.AccountInformation(pks[1], txHeaders...)
+	if err != nil {
+		fmt.Printf("failed to get account information: %s\n", err)
+		return
+	}
+	fmt.Printf("recipient")
+	PrettyPrint(act.Assets[assetID])
+
+	// Your terminal output should look similar to this...
+	
+	// Transaction PJFMUJPOSPQG6ZAKHZ4RW3WZT7BIU7B2QRR6OZA3TG7OSDK7U5ZA confirmed in round 4309690
+	// target{
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"amount": 0,
+	// 	"frozen": true
+	// } 
+	// recipient{
+	// 	"creator": "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
+	// 	"amount": 1000,
+	// 	"frozen": false
+	// } 
+	
 ```
 
 Step 8 Destroy an Asset
@@ -1567,7 +1894,43 @@ except Exception as e:
 ```
 
 ```go tab="Go"
+	// Insert after Step 7's code
 
+	// Destroy the asset
+	// Make sure all funds are back in the creator's account. Then use the
+	// Manager account (Account 1) to destroy the asset.
+	txn, err = transaction.MakeAssetDestroyTxn(manager, fee, firstRound, lastRound, note, genID, genHash, assetID)
+	if err != nil {
+		fmt.Printf("Failed to send txn: %s\n", err)
+		return
+	}
+	txid, stx, err = crypto.SignTransaction(sks[1], txn)
+	if err != nil {
+		fmt.Printf("Failed to sign transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID: %s\n", txid)
+	// Broadcast the transaction to the network
+	sendResponse, err = algodClient.SendRawTransaction(stx)
+	if err != nil {
+		fmt.Printf("failed to send transaction: %s\n", err)
+		return
+	}
+	fmt.Printf("Transaction ID raw: %s\n", sendResponse.TxID)
+	// Wait for transaction to be confirmed
+	waitForConfirmation(algodClient, sendResponse.TxID)
+	// Retrieve asset info. This should now throw an error.
+	assetInfo, err = algodClient.AssetInformation(assetID, txHeaders...)
+	if err != nil {
+		fmt.Printf("%s\n", err)
+	}
+
+	// Your terminal output should look similar to this...
+	
+	// Transaction ID: WBJTR4TWEVVWMNTUHXUY6CHXKRK3NVF76WQ74VF5HT2GFA75OI4A
+	// Transaction ID raw: WBJTR4TWEVVWMNTUHXUY6CHXKRK3NVF76WQ74VF5HT2GFA75OI4A
+	// Transaction WBJTR4TWEVVWMNTUHXUY6CHXKRK3NVF76WQ74VF5HT2GFA75OI4A confirmed in round 4309776
+	// HTTP 404 Not Found: failed to retrieve asset creator from the ledger
 ```
 
 Conclusion
