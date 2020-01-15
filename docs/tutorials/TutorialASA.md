@@ -466,7 +466,9 @@ Step 2 Create a New Asset
 Account 1 creates an asset called latinum and sets Account 2 as the manager, reserve, freeze, and clawback address.
 
 !!! note
-	With the Go code solution, you will need to paste this snippet before the final curly brace ```}``` and uncommnet the import libraries at the top as needed.
+	With the **Go** code solution, you will need to paste this snippet before the final curly brace ```}``` and uncommnet the import libraries at the top as needed.
+    
+    With the **Java** code solution, you will need to paste this snippet at the end of the ```main``` function, before the final two curly braces ```}}```
 
 ```javascript tab="JavaScript"
 (async () => {
@@ -612,7 +614,90 @@ except Exception as e:
 ```
 
 ```java tab="Java"
+        // Insert after Step 1 code
+        // Create a new asset
 
+        // The following parameters are asset specific
+        // and will be re-used throughout the example.
+
+        // Total number of this asset available for circulation
+        BigInteger assetTotal = BigInteger.valueOf(10000);
+        // Whether user accounts will need to be unfrozen before transacting
+        boolean defaultFrozen = false;
+        // Decimals specifies the number of digits to display after the decimal
+        // place when displaying this asset. A value of 0 represents an asset
+        // that is not divisible, a value of 1 represents an asset divisible
+        // into tenths, and so on. This value must be between 0 and 19
+        Integer assetDecimals = 0;
+        // Used to display asset units to user
+        String unitName = "LATINUM";
+        // Friendly name of the asset
+        String assetName = "latinum";
+        // Optional string pointing to a URL relating to the asset
+        String url = "http://this.test.com";
+        // Optional hash commitment of some sort relating to the asset. 32 character
+        // length.
+        String assetMetadataHash = "16efaa3924a6fd9d3a4824799a4ac65d";
+        // The following parameters are the only ones
+        // that can be changed, and they have to be changed
+        // by the current manager
+        // Specified address can change reserve, freeze, clawback, and manager
+        Address manager = acct2.getAddress();
+        // Specified address is considered the asset reserve
+        // (it has no special privileges, this is only informational)
+        Address reserve = acct2.getAddress();
+        // Specified address can freeze or unfreeze user asset holdings
+        Address freeze = acct2.getAddress();
+        // Specified address can revoke user asset holdings and send
+        // them to other addresses
+        Address clawback = acct2.getAddress();
+
+        Transaction tx = Transaction.createAssetCreateTransaction(acct1.getAddress(), BigInteger.valueOf(1000),
+                cp.firstRound, cp.lastRound, null, cp.genID, cp.genHash, assetTotal, assetDecimals, defaultFrozen,
+                unitName, assetName, url, assetMetadataHash.getBytes(), manager, reserve, freeze, clawback);
+        // Update the fee as per what the BlockChain is suggesting
+        Account.setFeeByFeePerByte(tx, cp.fee);
+
+        // Sign the Transaction
+        SignedTransaction signedTx = acct1.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        BigInteger assetID = null;
+        try {
+            TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+            // Now that the transaction is confirmed we can get the assetID
+            com.algorand.algosdk.algod.client.model.Transaction ptx = algodApiInstance
+                    .pendingTransactionInformation(id.getTxId());
+            assetID = ptx.getTxresults().getCreatedasset();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("AssetID = " + assetID);
+        AssetParams assetInfo = algodApiInstance.assetInformation(assetID);
+        System.out.println(assetInfo);
+        // terminal out put should look similar to this:
+        // Transaction ID: class TransactionID {
+        // txId: HZYZW2FRF6YXJZOJTI2YTDOKNHMTPQR5DBGZMIMGCWXWDC36N3RA
+        // }
+        // Transaction HZYZW2FRF6YXJZOJTI2YTDOKNHMTPQR5DBGZMIMGCWXWDC36N3RA confirmed in
+        // round 4288214
+        // AssetID = 150575
+        // class AssetParams {
+        // assetname: latinum
+        // clawbackaddr: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // decimals: 0
+        // defaultfrozen: false
+        // freezeaddr: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // managerkey: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // metadatahash: [B@41ab013
+        // reserveaddr: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // total: 10000
+        // unitname: LATINUM
+        // url: http://this.test.com
+        // }
 ```
 
 ```go tab="Go"
@@ -689,7 +774,8 @@ The current manager (Account 2) issues an asset configuration transaction that a
 ```python tab="Python"
 # insert after Step 2 code
 # Update manager address.
-# The current manager(Account 2) issues an asset configuration transaction that assigns Account 1 as the new manager.
+# The current manager(Account 2) issues an asset configuration transaction 
+# that assigns Account 1 as the new manager.
 # Keep reserve, freeze, and clawback address same as before, i.e. account 2
 data = {
     "sender": accounts[2]['pk'],
@@ -735,7 +821,71 @@ print(json.dumps(asset_info, indent=4))
 ```
 
 ```java tab="Java"
+         // Insert after Step 2's code
 
+        // Change Asset Configuration:
+        // Next we will change the asset configuration
+        // Note that configuration changes must be done by
+        // The manager account, which is currently acct2
+        // Note in this transaction we are re-using the asset
+        // creation parameters and only changing the manager
+        // and transaction parameters like first and last round
+
+        // First we update standard Transaction parameters
+        // To account for changes in the state of the blockchain
+        try {
+            cp = getChangingParms(algodApiInstance);
+        } catch (final ApiException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        tx = Transaction.createAssetConfigureTransaction(acct2.getAddress(), BigInteger.valueOf(1000), cp.firstRound,
+                cp.lastRound, null, cp.genID, cp.genHash, assetID, acct1.getAddress(), reserve, freeze, clawback,
+                false);
+        // Update the fee as per what the BlockChain is suggesting
+        Account.setFeeByFeePerByte(tx, cp.fee);
+        // The transaction must be signed by the current manager account
+        // We are reusing the signedTx variable from the first transaction in the
+        // example
+        signedTx = acct2.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        try {
+            final TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Next we will list the newly created asset
+        // Get the asset information for the newly changed asset
+
+        assetInfo = algodApiInstance.assetInformation(assetID);
+        // The manager should now be the same as the creator
+        System.out.println(assetInfo);
+        System.out.println("Creator = " + assetInfo.getCreator());
+
+        // terminal outout should look similar to this...
+        // Transaction A4NJTLFO5UHCNAAIKYASCJSO2O6V3TNKEEJFQO3S3RY6IKD2F3NQ confirmed in
+        // round 4290988
+        // class AssetParams {
+        // assetname: latinum
+        // clawbackaddr: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // decimals: 0
+        // defaultfrozen: false
+        // freezeaddr: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // managerkey: THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM
+        // metadatahash: [B@41ab013
+        // reserveaddr: AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
+        // total: 10000
+        // unitname: LATINUM
+        // url: http://this.test.com
+        // }
+        // Creator = THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM
+ 
 ```
 
 ```go tab="Go"
@@ -840,7 +990,62 @@ if not holding:
 ```
 
 ```java tab="Java"
+         // insert after code from Step 3's code
 
+        // Opt-in to Receive Asset
+        // All accounts that want recieve the new asset have to opt in.
+        // To do this they send an asset transfer of the new asset to themseleves with
+        // an ammount of 0
+        //
+        // In this example we are setting up the 3rd recovered account to
+        // receive the new asset
+        // First we update standard Transaction parameters
+        // To account for changes in the state of the blockchain
+        // com.algorand.algosdk.algod.client.model.Account act = new
+        // com.algorand.algosdk.algod.client.model.Account();
+        try {
+            cp = getChangingParms(algodApiInstance);
+        } catch (final ApiException e) {
+            e.printStackTrace();
+            return;
+        }
+        tx = Transaction.createAssetAcceptTransaction(acct3.getAddress(), BigInteger.valueOf(1000), cp.firstRound,
+                cp.lastRound, null, cp.genID, cp.genHash, assetID);
+        // Update the fee based on the network suggested fee
+        Account.setFeeByFeePerByte(tx, cp.fee);
+        // The transaction must be signed by the current manager account
+        // We are reusing the signedTx variable from the first transaction in the
+        // example
+        signedTx = acct3.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        com.algorand.algosdk.algod.client.model.Account act = algodApiInstance
+                .accountInformation(acct3.getAddress().toString());
+        try {
+            final TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+            // We can now list the account information for acct3
+            // and see that it can accept the new asseet
+            assetInfo = algodApiInstance.assetInformation(assetID);
+            System.out.println("AssetID: " + assetID);
+            System.out.println("Creator = " + assetInfo.getCreator());
+
+            act = algodApiInstance.accountInformation(acct3.getAddress().toString());
+            System.out.println("Account opt in for Asset transfer " + acct3.getAddress().toString());
+            System.out.println("Account Asset Holding Amount = " + act.getHolding(assetID).getAmount());
+
+        } catch (final Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        // terminal output should be similar to this...
+
+        // Transaction BQYA3R7L3M63VGLQBTWZURLWSBISM62KFRUGCK2RGBTQTBNNULUA confirmed in round 4296935
+        // AssetID: 151126
+        // Creator = THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM
+        // Account opt in for Asset transfer 3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU
+        // Account Asset Holding Amount = 0
 ```
 
 ```go tab="Go"
@@ -926,6 +1131,59 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```java tab="Java"
+        // Insert code after Step 4's code
+
+        // Transfer the Asset:
+        // Now that account3 can recieve the new asset we can tranfer assets
+        // from the creator (account 1) to account3
+
+        // First we update standard Transaction parameters
+        // To account for changes in the state of the blockchain
+        try {
+            cp = getChangingParms(algodApiInstance);
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return;
+        }
+        // Next we set asset xfer specific parameters
+        // We set the assetCloseTo to null so we do not close the asset out
+        Address assetCloseTo = new Address();
+        BigInteger assetAmount = BigInteger.valueOf(10);
+        tx = Transaction.createAssetTransferTransaction(acct1.getAddress(), acct3.getAddress(), assetCloseTo,
+                assetAmount, BigInteger.valueOf(1000), cp.firstRound, cp.lastRound, null, cp.genID, cp.genHash,
+                assetID);
+        // Update the fee based on the network suggested fee
+        Account.setFeeByFeePerByte(tx, cp.fee);
+        // The transaction must be signed by the sender account
+        // We are reusing the signedTx variable from the first transaction in the
+        // example
+        signedTx = acct1.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        try {
+            TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+            // We can now list the account information for acct3
+            // and see that it now has 10 of the new asset
+            assetInfo = algodApiInstance.assetInformation(assetID);
+            System.out.println("AssetID: " + assetID);
+            System.out.println("Creator = " + assetInfo.getCreator());
+
+            act = algodApiInstance.accountInformation(acct3.getAddress().toString());
+            System.out.println("Account w Asset transfered to " + acct3.getAddress().toString());
+            System.out.println("Account Asset Holding Amount = " + act.getHolding(assetID).getAmount());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        // termianl output should look similar to this
+        // Transaction HOYHCDQD3ZMHW5TOA2NBSDGVB4GPRQ26R6AQLNZPC64QJKL5RUHA confirmed in round 4296943
+        // AssetID: 151126
+        // Creator = THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM
+        // Account w Asset transfered to 3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU
+        // Account Asset Holding Amount = 10
 
 ```
 
@@ -1118,7 +1376,56 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```java tab="Java"
+        // Insert after Step 6's code
 
+        // Revoke the asset:
+        // The asset was also created with the ability for it to be revoked by
+        // clawbackaddress. If the asset was created or configured by the manager
+        // not allow this by setting the clawbackaddress to a blank address
+        // then this would not be possible.
+        // We will now clawback the 10 assets in account3. Account2
+        // is the clawbackaccount and must sign the transaction
+        // The sender will be be the clawback adress.
+        // the recipient will also be be the creator acct1 in this case
+        // First we update standard Transaction parameters
+        // To account for changes in the state of the blockchain
+        try {
+            cp = getChangingParms(algodApiInstance);
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return;
+        }
+        // Next we set asset xfer specific parameters
+        assetAmount = BigInteger.valueOf(10);
+        tx = Transaction.createAssetRevokeTransaction(acct2.getAddress(), acct3.getAddress(), acct1.getAddress(),
+                assetAmount, BigInteger.valueOf(1000), cp.firstRound, cp.lastRound, null, cp.genID, cp.genHash,
+                assetID);
+        // Update the fee based on the network suggested fee
+        Account.setFeeByFeePerByte(tx, cp.fee);
+        // The transaction must be signed by the clawback account
+        // We are reusing the signedTx variable from the first transaction in the
+        // example
+        signedTx = acct2.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        try {
+            TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+            // We can now list the account information for acct3
+            // and see that it now has 0 of the new asset
+            act = algodApiInstance.accountInformation(acct3.getAddress().toString());
+            System.out.println("Account 3 Asset amount = " + act.getHolding(assetID).getAmount());
+            act = algodApiInstance.accountInformation(acct1.getAddress().toString());
+            System.out.println("Account 1 Asset amount = " + act.getHolding(assetID).getAmount());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        // your terminal output should look something like this
+        // Transaction 6ZC6DBYAY4DI7HFZPDHRINXZQNDZX3WHHTM6OOYLPJ6REHUSRYOQ confirmed in round 4298849
+        // Account 3 Asset amount = 0
+        // Account 1 Asset amount = 10000
 ```
 
 ```go tab="Go"
@@ -1128,7 +1435,7 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 Step 8 Destroy an Asset
 -----------------------
 
-With all assets back in the creator's account, the manaager (Account 1) destroys the asset.
+With all assets back in the creator's account, the manager (Account 1) destroys the asset.
 
 ```javascript tab="JavaScript"
     // insert this code after Step 7's code
@@ -1213,7 +1520,50 @@ except Exception as e:
 ```
 
 ```java tab="Java"
+        // Insert after Step 7's code
 
+        // Destroy the Asset:
+        // All of the created assets should now be back in the creators
+        // Account so we can delete the asset.
+        // If this is not the case the asset deletion will fail
+        // The address for the from field must be the creator
+        // First we update standard Transaction parameters
+        // To account for changes in the state of the blockchain
+        try {
+            cp = getChangingParms(algodApiInstance);
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return;
+        }
+        // Next we set asset xfer specific parameters
+        // The manager must sign and submit the transaction
+        // This is currently set to acct1
+        tx = Transaction.createAssetDestroyTransaction(acct1.getAddress(), BigInteger.valueOf(1000), cp.firstRound,
+                cp.lastRound, null, cp.genHash, assetID);
+        // Update the fee based on the network suggested fee
+        Account.setFeeByFeePerByte(tx, cp.fee);
+        // The transaction must be signed by the manager account
+        // We are reusing the signedTx variable from the first transaction in the
+        // example
+        signedTx = acct1.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        try {
+            TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+            // We can now list the account information for acct1
+            // and see that the asset is no longer there
+            act = algodApiInstance.accountInformation(acct1.getAddress().toString());
+            System.out.println("Does AssetID: " + assetID + " exist? " + act.getThisassettotal().containsKey(assetID));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        // your terminal output should look similar to this
+        // Transaction SV5UPKAG7CI3BUZ74SL5VDFHRS2SGUVKAJVKNHSUZWIPM6HSRFEA confirmed in
+        // round 4299035
+        // Does AssetID: 151265 exist? false
 ```
 
 ```go tab="Go"
