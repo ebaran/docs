@@ -30,9 +30,9 @@ network
 Step 1A - Create 3 Accounts and add Algos to the Accounts
 --------------------------------------------------
 
-Assets are created at the account level. Each account can have up to 1000 assets for creator accounts as well as for consumer accounts. So, before starting the ASA tutorial, 3 new accounts will be created for this exercise for ASA transactions. Once created, copy off the account mnumonic values.  
+Assets are created at the account level. Each account can have up to 1000 assets for creator accounts as well as for consumer accounts. So, before starting the ASA tutorial, 3 new accounts will be created for this step for ASA transactions. Once created, copy off the account mnumonic and account address values.  
 
-So, first create an empty code file for desired language of choice (CreateNewAccounts.js, CreateNewAccounts.py, CreateNewAccounts.java, or CreateNewAccounts.go). Then simply copy the and insert the snippet. Update the node token and url, and run. Then copy off the account addresses and mnumonics. In Step 1B, we will paste those into the TutorialASA code and recover the account using the mnemonics created in this step. Mnumonics are for demonstration purposes. **NEVER** reveal secret mnemonics in practice.
+**Task 1A-1** Create an empty code file for desired language of choice (CreateNewAccounts.js, CreateNewAccounts.py, CreateNewAccounts.java, or CreateNewAccounts.go). Then simply copy the and insert the snippet. Update the node token and url, and run. Then copy off the account addresses and mnumonics. In Step 1B, we will paste those into the TutorialASA code and recover the account using the mnemonics created in this step. Mnumonics are for demonstration purposes. **NEVER** reveal secret mnemonics in practice.
 
 In order to run ASA transactions, or any transactions for that matter, the accounts need to have TestNet Algo funds. Load all 3 accounts from the Algorand TestNet Dispenser which is located here: <https://bank.testnet.algorand.network/>
 
@@ -49,10 +49,11 @@ In order to run ASA transactions, or any transactions for that matter, the accou
 
 
 !!! info
-    If you do not have a node setup, see these [instructions](https://developer.algorand.org/docs/introduction-installing-node). Also, another alternative is to use [PureStake](https://www.purestake.com/).
+    If you do not have a node setup, see these [instructions](https://developer.algorand.org/docs/introduction-installing-node). Also, another alternative is to use [PureStake](https://www.purestake.com/algorand-api).
 
 
 ```javascript tab="JavaScript"
+//JavaScript
 const algosdk = require('algosdk');
 
 // This code generates 3 accounts
@@ -140,6 +141,7 @@ console.log("var account3_mnemonic = \"" + account3_mnemonic + "\"");
 ```
 
 ```python tab="Python"
+#python
 import json
 from algosdk import account, mnemonic
 
@@ -148,80 +150,103 @@ address1 = acct[1]
 print("Account 1")
 print(address1)
 mnemonic1 = mnemonic.from_private_key(acct[0])
-print(mnemonic1)
-
 print("Account 2")
 acct = account.generate_account()
 address2 = acct[1]
 print(address2)
 mnemonic2 = mnemonic.from_private_key(acct[0])
-print(mnemonic2)
-
 print("Account 3")
 acct = account.generate_account()
 address3 = acct[1]
 print(address3)
 mnemonic3 = mnemonic.from_private_key(acct[0])
-print(mnemonic3)
+print ("")
+print("Copy off accounts above and add TestNet Algo funds using the TestNet Dispenser at https://bank.testnet.algorand.network/")
+print("copy off the following mnemonic code for use in Step 1B")
+print("")
+print("mnemonic1 = \"{}\"".format(mnemonic1))
+print("mnemonic2 = \"{}\"".format(mnemonic2))
+print("mnemonic3 = \"{}\"".format(mnemonic3))
 
 # terminal output should look similar to this
 # Account 1
-# SZV5GDE3GYKFGD3WA22JUQOLZJAVKFGEADVXPVZYTLLPK5LW72PDGNSEA4
-# caught home fortune move eternal dress way inherit miss erosion switch enrich spray cliff multiply repeat nephew canvas winner velvet craft youth service absent frequent
+# KECA5Z2ZILJOH2ZG7OPKJ5KMFXP5XBAOC7H36TLPJOQI3KB5UIYUD5XTZU
 # Account 2
-# NHVQFKFVPC37OSVSEPRXTL3ID7WP76FQHGGQ5L5ILJO6R5IMDILQWUOAMA
-# cousin toddler riot embody penalty follow execute like crystal base wrestle swift card arctic enforce tool belt demand rebuild arm fold suffer kangaroo absorb boring
+# DWQ4IA7EK5BKHSPNCJBA5SOVU66TKGUCCGO2SHQCI5UB2JAO3G2GWXMGPA
 # Account 3
-# LBRTFWUIUEKSTFGHCXORPEBALHVKWQ7R5QULFPNVKNJ7YI44KXYWJVRGY4
-# shadowrocketvaporneverantiquegalleryupdatemysteryhalforiginalnationsuremarketpaperlunartestbehaveoutputunawaresilverriskfieldclapabandongarment
+# TABDMZ2EUTNOR3S74SJWW37DLHE7BDGS5XB5JPLFQ2VQVJOE2DXKX722VU
 
+# Copy off accounts above and add TestNet Algo funds using the TestNet Dispenser at https: // bank.testnet.algorand.network/
+# copy off the following mnemonic code for use in Step 1B
+
+# mnemonic1 = "consider round clerk soldier hurt dynamic floor video output spoon deliver virtual zoo inspire rubber doll nose warfare improve abstract recall choice size above actor"
+# mnemonic2 = "boil explain enlist adapt science hub universe knife ghost scheme lazy payment must gas coconut forget goddess author filter civil tumble antique delay absorb lend"
+# mnemonic3 = "place elbow thumb bid taste strong sting tube swarm comic wave dinosaur congress sword zebra need proud primary brief rotate story pilot garbage abstract black"
 ```
 
 ```java tab="Java"
+//Java
 package com.algorand.Tutorials;
 import com.algorand.algosdk.account.Account;
 import com.algorand.algosdk.crypto.Address;
 public class CreateNewAccounts {
-    public static void main(final String args[]) throws Exception {
-        // Create a random new account
-        Account act1 = new Account();
-        // Get the new account address
-        Address addr1 = act1.getAddress();
-        // Get the backup phrase
-        String backup1 = act1.toMnemonic();
-        System.out.println("Account Address 1: " + addr1.toString());
-        System.out.println("Mnemonic 1: " + backup1);
+public static void main(final String args[]) throws Exception {
+// Create a random new account
+Account act1 = new Account();
+// Get the new account address
+Address addr1 = act1.getAddress();
+// Get the backup phrase
+String backup1 = act1.toMnemonic();
+System.out.println("Account Address 1: " + addr1.toString());
+// Create a random new account
+Account act2 = new Account();
+// Get the new account address
+Address addr2 = act2.getAddress();
+// Get the backup phrase
+String backup2 = act2.toMnemonic();
+System.out.println("Account Address 2: " + addr2.toString());
+// Create a random new account
+Account act3 = new Account();
+// Get the new account address
+Address addr3 = act3.getAddress();
+// Get the backup phrase
+String backup3 = act3.toMnemonic();
+System.out.println("Account Address 3: " + addr3.toString());
+System.out.println("");
+System.out.println(
+        "Copy off accounts above and add TestNet Algo funds using the TestNet Dispenser at https://bank.testnet.algorand.network/");
+System.out.println("");
+System.out.println("copy off the following code for use in Step 1B");
+System.out.println("");
+System.out.println("final String account1_mnemonic = \"" + backup1 + "\"");
+System.out.println("final String account2_mnemonic = \"" + backup2 + "\"");
+System.out.println("final String account3_mnemonic = \"" + backup3 + "\"");
+// Terminal output should look similar to this...
 
-        // Create a random new account
-        Account act2 = new Account();
-        // Get the new account address
-        Address addr2 = act2.getAddress();
-        // Get the backup phrase
-        String backup2 = act2.toMnemonic();
-        System.out.println("Account Address 2: " + addr2.toString());
-        System.out.println("Mnemonic 2: " + backup2);      
+// Account Address 1: PSF2S7OTAIP6YEQBOF4R7JOYDBZMTMAG7KCAUCQUM6UPCELHNRS5LQPS3M
+// Account Address 2: FIBG65O25CMDTEG5ARZBDWABUDO3Z6ZRVNTAJN4DCLYCI6Z4YZFSEWF55M
+// Account Address 3: AWICWFUDL5CO3XYSWGRMXLS7ML2RGOSCWQNXNSFVR2VOP73P6IMEZ7FUFY
 
-        // Create a random new account
-        Account act3 = new Account();
-        // Get the new account address
-        Address addr3 = act3.getAddress();
-        // Get the backup phrase
-        String backup3 = act3.toMnemonic();
-        System.out.println("Account Address 3: " + addr3.toString());
-        System.out.println("Mnemonic 2: " + backup3);
-        // Terminal output should look similar to this...@interface
-        // Account Address 1: OD7CDZCONULSLN2I4DN4IVAWQQPA75GH3SP443Q2DJ5BGOVKAGDWLIZI4M
-        // Mnemonic 1: country youth visit sniff among believe toward spin blade woman gasp lawn else divert ignore entry zero super middle depart kit seek crunch abandon notice
-        // Account Address 2: PEJ6HCT4BK7SAZDQIHRHXHLNK2O63IGSZZH4RJC7Z2N2BW7CKVCY5TKJN4
-        // Mnemonic 2: leaf sure bar phone purity soccer lion edit page multiply kiss verb blade ginger twice type rescue tunnel color unaware dial angry path abstract toast
-        // Account Address 3: 2IPLPISTLT4GMREDU6HQO7BKZC6R4N2QGTVKBHDGTJM7O3RNXV6SDSZA3U
-        // Mnemonic 2: double black donate deposit awesome eight lawn rug ugly portion inmate pause spoon parrot traffic blue useful note grow crop feed prize note absent relief 
-    }
+// Copy off accounts above and add TestNet Algo funds using the TestNet
+// Dispenser at https://bank.testnet.algorand.network/
 
+// copy off the following code for use in Step 1B
+
+// final String account1_mnemonic = "tongue mention field lottery diagram yellow
+// walk erupt supply link bike setup learn excite recycle lunar flag dash lucky
+// dad evoke refuse ticket able please"
+// final String account2_mnemonic = "over fantasy smile pupil visual film club
+// balcony jacket tilt amateur whip crisp allow clay govern canoe fat group
+// develop sorry test unknown absent dinner"
+// final String account3_mnemonic = "category sick rough intact design board
+// episode hedgehog build bundle siege voyage rent season fossil weird cannon
+// pipe grow winner wall urge report about weapon"
+}
 }
 ```
 
 ```go tab="Go"
+//Go
 package main
 
 import (
@@ -232,18 +257,6 @@ import (
 	"github.com/algorand/go-algorand-sdk/mnemonic"
 )
 
-// PrettyPrint prints Go structs
-func PrettyPrint(data interface{}) {
-	var p []byte
-	//    var err := error
-	p, err := json.MarshalIndent(data, "", "\t")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("%s \n", p)
-}
-
 func main() {
 	account1 := crypto.GenerateAccount()
 	account2 := crypto.GenerateAccount()
@@ -251,6 +264,7 @@ func main() {
 	address1 := account1.Address.String()
 	address2 := account2.Address.String()
 	address3 := account3.Address.String()
+
 	mnemonic1, err := mnemonic.FromPrivateKey(account1.PrivateKey)
 	if err != nil {
 		return
@@ -263,31 +277,29 @@ func main() {
 	if err != nil {
 		return
 	}
-
-	fmt.Println("Account 1 ")
-	PrettyPrint(address1)
-	PrettyPrint(mnemonic1)
-	fmt.Println("Account 2")
-	PrettyPrint(address2)
-	PrettyPrint(mnemonic2)
-	fmt.Println("Account 3")
-	PrettyPrint(address3)
-	PrettyPrint(mnemonic3)
-
+	fmt.Printf("Account 1 = %s\n", address1)
+	fmt.Printf("Account 2 = %s\n", address2)
+	fmt.Printf("Account 3 = %s\n", address3)
+	fmt.Printf("")
+	fmt.Printf("Copy off accounts above and add TestNet Algo funds using the TestNet Dispenser at https://bank.testnet.algorand.network/\n")	
+	fmt.Printf("Copy off the following mnemonic code for use in Step 1B\n")
+	fmt.Printf("\n")	
+	fmt.Printf("mnemonic1 := \"%s\"\n", mnemonic1)
+	fmt.Printf("mnemonic2 := \"%s\"\n", mnemonic2)
+	fmt.Printf("mnemonic3 := \"%s\"\n", mnemonic3)
 }
 
 // Terminal output should look similar to this...
-// Account 1
-// "E4Y5SNF3GAMARZ46YFX2YYSOY3YNDIKASMDMVEY3353L5ENKEPREUK2XFU"
-// "under supreme boil forward stairs away permit tray story embody mansion spend roast item unable smoke nation viable fat ethics virtual later evoke absent cereal"
-// Account 2
-// "NOMYOGSSDMXRG6DAOWYBXQZ4Z2KJ6ACKMXFELS4HFAHZV4SAWI5FNKMWPA"
-// "plate wear guess dismiss wheat faith chunk rocket private sauce pig post audit hero impact minimum grocery flip alpha pride almost bone gather abandon win"
-// Account 3
-// "JRH3Z4UR6JEH7WMWZ57Y6ARZRJ2CNYGSQASH3IUSZ7P46UEJQLTJN5EVRI"
-// "regret undo below degree rice margin borrow inflict moment advice desert column plastic peanut lamp solve jacket inspire pepper field glow borrow glimpse ability hobby"
- 
 
+// Account 1 = BQBRKJ7KSQO6WWX3QRSITPCZOEDOT6DX6MJVQQFQI72PDPTKWU5WKOOJ2I
+// Account 2 = LBMZ2DNGB5N7AJNZQZPMTPDJRW3S6OB6YR4EHE5RYODRS67TILA5H23K4A
+// Account 3 = 6AVEBUP35AHIKDA6UGSFM6LP433AUHVRZNW4KHAXOYCOYDYOLFJWZ7J3I4
+// Copy off accounts above and add TestNet Algo funds using the TestNet Dispenser at https://bank.testnet.algorand.network/
+// Copy off the following mnemonic code for use in Step 1B
+
+// mnemonic1 := "fatigue laundry small early radar code supreme diary skin record slice distance bike skirt guard surround miss turtle horror frame train taxi column ability forest"
+// mnemonic2 := "ill live coconut risk east flower snack develop boring enroll nest rice mistake pioneer rival account coffee depend bachelor orient rebel inform throw absent option"
+// mnemonic3 := "broom bid found recall stick gas sample copy network mistake mind relief rely file disorder east asthma program filter hedgehog legal walnut wait about slogan"
 ```
 
 
@@ -316,18 +328,20 @@ Account 3
     the [Algo TestNet Explorer](https://testnet.algoexplorer.io/) or use the Purestake's [Goalseeker](https://goalseeker.purestake.io/algorand/testnet), which also
     facilitates search by asset ID.
 
-![Figure Step 1-1 Use Purestake’s [Goalseeker](https://goalseeker.purestake.io/algorand/testnet) to search on Address, Transaction, Block or AssetID](../imgs/TutorialASA-01.png)
-
+![Figure Step 1A-1 Use Purestake’s [Goalseeker](https://goalseeker.purestake.io/algorand/testnet) to search on Address, Transaction, Block or AssetID](../imgs/TutorialASA-01.png)
+**Figure Step 1B-1** Purestake’s Goalseeker used to search Address,
+Transaction, Block or AssetID.
 <!-- <center>![Goalseeker](../imgs/TutorialASA-01.png)</center>
-<center>**Figure Step 1-1** Use Purestake’s Goalseeker to search Address,
+<center>**Figure Step 1A-1** Use Purestake’s Goalseeker to search Address,
 Transaction, Block or AssetID.</center> -->
 
-The tutorial code below is separated into snippets categorized by ASA core functions, but is laid out in order and should be coded as a single script for each respective language. 
+The tutorial code below is separated into snippets categorized by ASA core functions and is laid out in order. The solution should be coded as a single script for each respective language. 
 
-Create an empty code file for desired language of choice (TutorialASA.js, TutorialASA.py, TutorialASA.java, or TutorialASA.go). Then simply copy the code below and paste into the empty file. Then append the each snippet after the last line of code in the prior step as you read through this tutorial.
+**Task 1B-1** Create an empty code file for desired language of choice (TutorialASA.js, TutorialASA.py, TutorialASA.java, or TutorialASA.go). Then simply copy the code below and paste into the empty file. Then append the each snippet after the last line of code in the prior step as you read through this tutorial.
+
 
 ```javascript tab="JavaScript"
-
+//JavaScript
 const algosdk = require('algosdk');
 //Retrieve the token, server and port values for your installation in the algod.net
 //and algod.token files within the data directory
@@ -390,7 +404,7 @@ let algodclient = new algosdk.Algod(token, server, port);
 ```
 
 ```python tab="Python"
-
+# Python
 import json
 from algosdk import account, algod, mnemonic, transaction
 # Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
@@ -445,6 +459,7 @@ print("Account 3 address: {}".format(accounts[3]['pk']))
 ```
 
 ```java tab="Java"
+//Java
 package com.algorand.Tutorials;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -587,7 +602,7 @@ System.out.println(acct3.getAddress().toString());
 ```
 
 ```go tab="Go"
-
+//Go
 package main
 
 import (
@@ -712,13 +727,19 @@ PrettyPrint(pks)
 Step 2 Create a New Asset
 ---------------------------
 
-Account 1 creates an asset called latinum and sets Account 2 as the manager, reserve, freeze, and clawback address.
+The ability to create asserts directly on the blockcahin is an exciting capability of the Algorand Blockchain. Possible uses include currency, game leader boards, points in a loyalty system, shares of an asset, and securities such as stocks, bonds, and derivaties.  
+
+
+!!!info 
+    The decimals value determines the placement of the decimal. For example, when `decimals = 2`, and the `amount = 1000`, the acatual amount is 10.00. So, when a  transfer of amount of 10 is made, the actual transfer is .10
+
 
 !!! note
 	With the **Go** code solution, paste this snippet before the final curly brace `}` and uncommnet the import libraries at the top as needed.
     
     With the **Java** code solution, paste this snippet at the end of the `main` function, before the final two curly braces `}}`
 
+**Task 2-1** Account 1 creates an asset called latinum and sets Account 2 as the manager, reserve, freeze, and clawback address.
 
 ```javascript tab="JavaScript"
 // JavaScript
@@ -795,6 +816,7 @@ Account 1 creates an asset called latinum and sets Account 2 as the manager, res
 ```
 
 ```python tab="Python"
+# python
 # insert after step 1 code
 # Account 1 creates an asset called latinum and sets Account 2 as the manager, reserve, freeze, and clawback address.
 
@@ -865,6 +887,7 @@ except Exception as e:
 ```
 
 ```java tab="Java"
+        // Java
         // Insert after Step 1 code
         // Create a new asset
 
@@ -952,7 +975,8 @@ except Exception as e:
 ```
 
 ```go tab="Go"
-	// Insert code after Step 1 code
+    // Go
+    // Insert code after Step 1 code
 
 	// Create an Asset
 	// uncomment these imports at the top
@@ -1050,7 +1074,11 @@ except Exception as e:
 
 Step 3 Configure Asset Manager
 ------------------------------
-The current manager (Account 2) issues an asset configuration transaction that assigns Account 1 as the new manager.
+Assets can be managed as to which accounts have roles for overall manager, reserve, freeze, and clawback functions. By default all of these roles are set to the creator account. 
+
+Asset reconfiguration allows the address specified as manager to change any of the special addresses for the asset, such as the reserve address. To keep an address the same, it must be re-specified in each new configuration transaction. Supplying an empty address is the same as turning the associated feature off for this asset. Once a special address is set to the empty address, it can never change again. For example, if an asset configuration transaction specifying clawback="" were issued, the associated asset could never be revoked from asset holders, and clawback="" would be true for all time. The  strictEmptyAddressChecking argument can help with this behavior: when set to its default true, makeAssetConfigTxn will throw an error if any undefined management addresses are passed.
+
+**Task 3-1** Here, the current manager (Account 2) issues an asset configuration transaction that assigns Account 1 as the new manager.
 
 !!! note
     With the JavaScript code solution, you will need to paste snippets above this catch statement.
@@ -1063,6 +1091,7 @@ The current manager (Account 2) issues an asset configuration transaction that a
 ```
 
 ```javascript tab="JavaScript"
+    // JavaScript
     // add this code after console.log("AssetID = " + assetID); in Step 2 above
     
     // Change Asset Configuration:
@@ -1116,6 +1145,7 @@ The current manager (Account 2) issues an asset configuration transaction that a
 ```
 
 ```python tab="Python"
+# Python
 # insert after Step 2 code
 # Update manager address.
 # The current manager(Account 2) issues an asset configuration transaction 
@@ -1165,6 +1195,7 @@ print(json.dumps(asset_info, indent=4))
 ```
 
 ```java tab="Java"
+         // Java
          // Insert after Step 2's code
 
         // Change Asset Configuration:
@@ -1233,7 +1264,8 @@ print(json.dumps(asset_info, indent=4))
 ```
 
 ```go tab="Go"
-	// Insert after Step 2's code
+    // Go
+    // Insert after Step 2's code
 
 	// Change Asset Manager from Account 2 to Account 1
 	manager = pks[1]
@@ -1289,9 +1321,14 @@ print(json.dumps(asset_info, indent=4))
 Step 4 Opt-in to Receive Asset
 ------------------------------
 
-Account 3 opts-in to receive the new asset by sending a 0 amount transfer of the asset to itself.
+Once the asset has been created, the next thing to do is send assets to other accounts. 
+
+Before a user can begin transacting with an asset, the user must first issue an asset acceptance transaction. This is a special case of the asset transfer transaction, where the user sends 0 assets to themself. After issuing this transaction, the user can begin transacting with the asset. Each new accepted asset increases the user's minimum balance.
+
+**Task 4-1** Account 3 opts-in to receive the new asset by sending a 0 amount transfer of the asset to itself.
 
 ```javascript tab="JavaScript"
+    // JavaScript
     // insert this code after console.log(assetInfo); in Step 3
 
     // Opting in to an Asset:
@@ -1339,6 +1376,7 @@ Account 3 opts-in to receive the new asset by sending a 0 amount transfer of the
 ```
 
 ```python tab="Python"
+# Python
 # insert after Step 3 code
 
 # Check if asset_id is in account 2's asset holdings prior to opt-in
@@ -1384,7 +1422,8 @@ if not holding:
 ```
 
 ```java tab="Java"
-         // insert after code from Step 3's code
+        // Java
+        // insert after code from Step 3's code
 
         // Opt-in to Receive Asset
         // All accounts that want recieve the new asset have to opt in.
@@ -1443,7 +1482,8 @@ if not holding:
 ```
 
 ```go tab="Go"
-	// Insert after step 3's code
+    // Go
+    // Insert after step 3's code
 
 	// Account 3 opts in to receive latinum
     // Use previously set transaction parameters and update sending address to account 3
@@ -1490,9 +1530,15 @@ if not holding:
 Step 5 Transfer an Asset
 ------------------------
 
-Account 1 sends 10 latinum to Account 3.
+Transfer an asset allows users to transact with assets, after they have issued asset acceptance transactions. The optional closeRemainderTo argument can be used to stop transacting with a particular asset. Now that the opt-in has been done on a potential receiving accout, assets can be transferred.
+
+!!!note
+    A frozen account can always close out to the asset creator.
+
+**Task 5-1** This code has Account 1 sending 10 latinum to Account 3.
 
 ```javascript tab="JavaScript"
+// JavaScript
 // add this code after Step 4's code - console.log("Account Information for: " + JSON.stringify(act.assets[assetID]));
   
     // Transfer New Asset:
@@ -1530,6 +1576,7 @@ Account 1 sends 10 latinum to Account 3.
 ```
 
 ```python tab="Python"
+# Python
 # insert after Step 4 code
 
 # transfer asset from account 1 to account 3
@@ -1566,6 +1613,7 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```java tab="Java"
+        // Java
         // Insert code after Step 4's code
 
         // Transfer the Asset:
@@ -1623,7 +1671,8 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```go tab="Go"
-	// Insert after step 4's code
+    // Go
+    // Insert after step 4's code
 
 	// Transfer an Asset
 	// Send  10 latinum from Account 1 to Account 3
@@ -1674,10 +1723,13 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 Step 6 Freeze an Asset
 -----------------------
 
-The freeze address (Account 2) freezes Account 3's latinum holdings.
+To freeze or unfreeze an asset, this transaction must be sent from the account specified as the freeze manager for the asset.
+
+**Task 6-1** The freeze address (Account 2) freezes Account 3's latinum holdings.
 
 
 ```javascript tab="JavaScript"
+// JavaScript
 // insert this code after Step 5's code
 
 // The asset was created and configured to allow freezing an account
@@ -1718,6 +1770,7 @@ The freeze address (Account 2) freezes Account 3's latinum holdings.
 ```
 
 ```python tab="Python"
+# Python
 # insert code after Step 5
 # The freeze address (Account 2) freezes Account 3's latinum holdings.
 data = {
@@ -1752,11 +1805,67 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```java tab="Java"
+         // Java
+        // Freeze the Asset:
+        // The asset was created and configured to allow freezing an account
+        // If the freeze address is blank, it will no longer be possible to do this.
+        // In this example we will now freeze account3 from transacting with the
+        // The newly created asset.
+        // The freeze transaction is sent from the freeze acount
+        // Which in this example is account2
+        // First we update standard Transaction parameters
+        // To account for changes in the state of the blockchain
+        try {
+            cp = getChangingParms(algodApiInstance);
+        } catch (ApiException e) {
+            e.printStackTrace();
+            return;
+        }
+        // Next we set asset xfer specific parameters
+        boolean freezeState = true;
+        // The sender should be freeze account acct2
+        // Theaccount to freeze should be set to acct3
+        tx = Transaction.createAssetFreezeTransaction(acct2.getAddress(), acct3.getAddress(), freezeState,
+                BigInteger.valueOf(1000), cp.firstRound, cp.lastRound, null, cp.genHash, assetID);
+        // Update the fee based on the network suggested fee
+        Account.setFeeByFeePerByte(tx, cp.fee);
+        // The transaction must be signed by the freeze account acct2
+        // We are reusing the signedTx variable from the first transaction in the
+        // example
+        signedTx = acct2.signTransaction(tx);
+        // send the transaction to the network and
+        // wait for the transaction to be confirmed
+        try {
+            TransactionID id = submitTransaction(algodApiInstance, signedTx);
+            System.out.println("Transaction ID: " + id);
+            waitForTransactionToComplete(algodApiInstance, signedTx.transactionID);
+            // We can now list the account information for acct3
+            // and see that it now frozen
+            // Note--currently no getter method for frozen state
+            act = algodApiInstance.accountInformation(acct3.getAddress().toString());
+            System.out.println(act.getHolding(assetID).toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        assetInfo = algodApiInstance.assetInformation(assetID);
+        System.out.println("AssetID: " + assetID);
+        System.out.println("Creator = " + assetInfo.getCreator());
 
+        act = algodApiInstance.accountInformation(acct3.getAddress().toString());
+        System.out.println("Account w Asset frozen " + acct3.getAddress().toString());
+        System.out.println("Account Asset Holding Info = " + act);
+
+        // termianl out put should show something similar to this
+        // AssetID: 151234
+        // Creator = THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM
+        // Account w Asset frozen
+        // 3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU
 ```
 
 ```go tab="Go"
-	// Insert after step 5's code
+    // Go
+    // Insert after step 5's code
 	// Freeze an Asset
 
 	// The freeze address (Account 2) Freeze's asset for Account 3.
@@ -1803,9 +1912,12 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 Step 7 Revoke an Asset
 ----------------------
 
-The clawback address (Account 2) revokes 10 latinum from Account 3 and places it back with Account 1.
+Revoking an asset allows an asset's revocation manager to transfer assets on behalf of another user. It will only work when issued by the asset's revocation manager.
+
+**Task 7-1** The clawback address (Account 2) revokes 10 latinum from Account 3 and places it back with Account 1.
 
 ```javascript tab="JavaScript"
+//JavaScript
 //insert this code affter Step 6 code
     // Revoke an Asset:
     // The asset was also created with the ability for it to be revoked by 
@@ -1853,6 +1965,7 @@ The clawback address (Account 2) revokes 10 latinum from Account 3 and places it
 ```
 
 ```python tab="Python"
+# Python
 # insert after Step 6 code
 # The clawback address (Account 2) revokes 10 latinum from Account 3 and places it back with Account 1.
 data = {
@@ -1897,6 +2010,7 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```java tab="Java"
+        // Java
         // Insert after Step 6's code
 
         // Revoke the asset:
@@ -1950,7 +2064,8 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 ```
 
 ```go tab="Go"
-	// Insert after Step 6's code
+    // Go
+    // Insert after Step 6's code
 	// Revoke an Asset
 	// The clawback address (Account 2) revokes 10 latinum from Account 3 (target)
 	// and places it back with Account 1 (creator).
@@ -2013,9 +2128,12 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 Step 8 Destroy an Asset
 -----------------------
 
-With all assets back in the creator's account, the manager (Account 1) destroys the asset.
+Asset destruction allows the creator to remove the asset from the ledger, if all outstanding assets are held by the creator. 
+
+**Task 8-1** With all assets back in the creator's account, the manager (Account 1) destroys the asset.
 
 ```javascript tab="JavaScript"
+    // JavaScript
     // insert this code after Step 7's code
 
     // Destroy and Asset:
@@ -2057,6 +2175,7 @@ With all assets back in the creator's account, the manager (Account 1) destroys 
 ```
 
 ```python tab="Python"
+# Python
 # insert code after Step 7's code]
 # With all assets back in the creator's account,
 # the manaager (Account 1) destroys the asset.
@@ -2098,6 +2217,7 @@ except Exception as e:
 ```
 
 ```java tab="Java"
+        // Java
         // Insert after Step 7's code
 
         // Destroy the Asset:
@@ -2145,7 +2265,8 @@ except Exception as e:
 ```
 
 ```go tab="Go"
-	// Insert after Step 7's code
+    // Go
+    // Insert after Step 7's code
 
 	// Destroy the asset
 	// Make sure all funds are back in the creator's account. Then use the
