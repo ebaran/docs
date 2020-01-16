@@ -26,33 +26,15 @@ all Algorand assets
 **High ease of use** - Create your asset with a single transaction to the
 network
 
-Step 1 Setup Accounts, Utility Functions and Tools
+
+Step 1A - Create 3 Accounts and add Algos to the Accounts
 --------------------------------------------------
 
-This tutorial will use three TestNet accounts that have been pre-created. It is
-possible that these accounts may run out of Algos and you would need to dispense
-more funds using the TestNet Dispenser.
+Assets are created at the account level. Each account can have up to 1000 assets for creator accounts as well as for consumer accounts. So, before starting the ASA tutorial, 3 new accounts will be created for this exercise for ASA transactions. Once created, copy off the account mnumonic values.  
 
-The TestNet dispenser is located here:
-<https://bank.testnet.algorand.network/>
+So, first create an empty code file for desired language of choice (CreateNewAccounts.js, CreateNewAccounts.py, CreateNewAccounts.java, or CreateNewAccounts.go). Then simply copy the and insert the snippet. Update the node token and url, and run. Then copy off the account addresses and mnumonics. In Step 1B, we will paste those into the TutorialASA code and recover the account using the mnemonics created in this step. Mnumonics are for demonstration purposes. **NEVER** reveal secret mnemonics in practice.
 
-The accounts used in this tutorial are:
-THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM
-AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU
-3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU
-
-!!! info
-    You may want to verify account information periodically as well as transactions
-    with asset information during the course of this tutorial. You can use either
-    the [Algo TestNet Explorer](https://testnet.algoexplorer.io/) or use the Purestake's [Goalseeker](https://goalseeker.purestake.io/algorand/testnet), which also
-    facilitates search by asset ID.
-
-<!-- ![Figure Step 1-1 Use Purestake’s [Goalseeker](https://goalseeker.purestake.io/algorand/testnet) to search on Address,
-Transaction, Block or AssetID](../imgs/TutorialASA-01.png) -->
-
-<center>![Goalseeker](../imgs/TutorialASA-01.png)</center>
-<center>**Figure Step 1-1** Use Purestake’s Goalseeker to search Address,
-Transaction, Block or AssetID.</center>
+In order to run ASA transactions, or any transactions for that matter, the accounts need to have TestNet Algo funds. Load all 3 accounts from the Algorand TestNet Dispenser which is located here: <https://bank.testnet.algorand.network/>
 
 !!! info
     See the appropriate GitHub repository for installing the SDKs:
@@ -69,9 +51,280 @@ Transaction, Block or AssetID.</center>
 !!! info
     If you do not have a node setup, see these [instructions](https://developer.algorand.org/docs/introduction-installing-node). Also, another alternative is to use [PureStake](https://www.purestake.com/).
 
-Now for the code. The tutorial code below is separated into snippets categorized by ASA core functions, but is laid out in order and should be coded as a single script for each respective language. 
 
-So, first create an empty code file for desired language of choice (TutorialASA.js, TutorialASA.py, TutorialASA.java, or TutorialASA.go). Then simply append the each snippet after the last line of code in the prior step as you read through this tutorial.
+```javascript tab="JavaScript"
+const algosdk = require('algosdk');
+
+// This code generates 3 accounts
+// Once created, copy off the values which we will past into the TutorialASA code in the next Step
+// Then, Add funds to all three
+// The Algorand TestNet Dispenser is located here: 
+// https://bank.testnet.algorand.network/
+
+// Retrieve the token, server and port values for your installation in the algod.net
+// and algod.token files within the data directory
+// or use PureStake API service https://www.purestake.com/
+
+// UPDATE THESE VALUES
+const token = "TOKEN";
+const server = "SERVER";
+const port = PORT;
+
+var acct = null;
+
+acct = algosdk.generateAccount();
+
+account1 = acct.addr;
+console.log("Account 1 = " + account1);
+var account1_mnemonic = algosdk.secretKeyToMnemonic(acct.sk);
+console.log("Account Mnemonic 1 = "+ account1_mnemonic);
+var recoveredAccount1 = algosdk.mnemonicToSecretKey(account1_mnemonic);
+var isValid = algosdk.isValidAddress(recoveredAccount1.addr);
+console.log("Is this a valid address: " + isValid);
+console.log("Account created. Save off Mnemonic and address");
+
+acct = algosdk.generateAccount();
+
+account2 = acct.addr;
+console.log("Account 2 = " + account2);
+var account2_mnemonic = algosdk.secretKeyToMnemonic(acct.sk);
+console.log("Account Mnemonic 2 = " +account2_mnemonic);
+var recoveredAccount2 = algosdk.mnemonicToSecretKey(account2_mnemonic);
+var isValid = algosdk.isValidAddress(recoveredAccount2.addr);
+console.log("Is this a valid address: " + isValid);
+console.log("Account created. Save off Mnemonic and address");
+
+acct = algosdk.generateAccount();
+
+account3 = acct.addr;
+console.log("Account 3 = " + account3);
+var account3_mnemonic = algosdk.secretKeyToMnemonic(acct.sk);
+console.log("Account Mnemonic 3 = " +account3_mnemonic);
+var recoveredAccount3 = algosdk.mnemonicToSecretKey(account3_mnemonic);
+var isValid = algosdk.isValidAddress(recoveredAccount3.addr);
+console.log("Is this a valid address: " + isValid);
+console.log("Account created. Save off Mnemonic and address");
+console.log("");
+console.log("Add funds to all of these accounts using the TestNet Dispenser at https://bank.testnet.algorand.network/ ");
+console.log("");
+console.log("Copy off these 3 lines of code and they will be pasted in the ASA Tutorial code");
+console.log("");
+console.log("var account1_mnemonic = \"" + account1_mnemonic + "\"");
+console.log("var account2_mnemonic = \"" + account2_mnemonic + "\"");
+console.log("var account3_mnemonic = \"" + account3_mnemonic + "\"");
+//
+// your terminal output should look similar to this:
+
+// Account 1 = GNZLAV7QIYGISQ4EYY4Q2LUKHBXKXKPVMQJDWLZXDY57Z46HATOFMBWP7A
+// Account Mnemonic 1 = hidden glove heart now claw away business behind echo best select merry secret upset shed margin outer reflect holiday rib among script scorpion above oval
+// Is this a valid address: true
+// Account created.Save off Mnemonic and address
+
+// Account 2 = 4N6OZZU73MUIS7IWW2OVSDXRIK6JSI5QAOWHU2CZGIVF4WNQUYFOMY7UEA
+// Account Mnemonic 2 = plug cabin shuffle hope similar exact enable speed amateur shift ramp machine scrap comfort shove carry test marble hip protect melody win wink ability hybrid
+// Is this a valid address: true
+// Account created.Save off Mnemonic and address
+
+// Account 3 = LCNNXW27VDCFYZI3AERPBHJ3DWIC3PJ4DQYDQBFHWR4UNDYFZVYT2VJ5LU
+// Account Mnemonic 3 = divert feel ball make absorb deny student turn fuel north slice wolf small tribe pull work scout empty nose riot zoo prepare loan absent kingdom
+// Is this a valid address: true
+// Account created.Save off Mnemonic and address
+
+// Add funds to all of these accounts using the TestNet Dispenser at https://bank.testnet.algorand.network/ 
+
+// Copy off these 3 lines of code and they will be pasted in the ASA Tutorial code
+
+// var account1_mnemonic = "hidden glove heart now claw away business behind echo best select merry secret upset shed margin outer reflect holiday rib among script scorpion above oval"
+// var account2_mnemonic = "plug cabin shuffle hope similar exact enable speed amateur shift ramp machine scrap comfort shove carry test marble hip protect melody win wink ability hybrid"
+// var account3_mnemonic = "divert feel ball make absorb deny student turn fuel north slice wolf small tribe pull work scout empty nose riot zoo prepare loan absent kingdom"
+```
+
+```python tab="Python"
+import json
+from algosdk import account, mnemonic
+
+acct = account.generate_account()
+address1 = acct[1]
+print("Account 1")
+print(address1)
+mnemonic1 = mnemonic.from_private_key(acct[0])
+print(mnemonic1)
+
+print("Account 2")
+acct = account.generate_account()
+address2 = acct[1]
+print(address2)
+mnemonic2 = mnemonic.from_private_key(acct[0])
+print(mnemonic2)
+
+print("Account 3")
+acct = account.generate_account()
+address3 = acct[1]
+print(address3)
+mnemonic3 = mnemonic.from_private_key(acct[0])
+print(mnemonic3)
+
+# terminal output should look similar to this
+# Account 1
+# SZV5GDE3GYKFGD3WA22JUQOLZJAVKFGEADVXPVZYTLLPK5LW72PDGNSEA4
+# caught home fortune move eternal dress way inherit miss erosion switch enrich spray cliff multiply repeat nephew canvas winner velvet craft youth service absent frequent
+# Account 2
+# NHVQFKFVPC37OSVSEPRXTL3ID7WP76FQHGGQ5L5ILJO6R5IMDILQWUOAMA
+# cousin toddler riot embody penalty follow execute like crystal base wrestle swift card arctic enforce tool belt demand rebuild arm fold suffer kangaroo absorb boring
+# Account 3
+# LBRTFWUIUEKSTFGHCXORPEBALHVKWQ7R5QULFPNVKNJ7YI44KXYWJVRGY4
+# shadowrocketvaporneverantiquegalleryupdatemysteryhalforiginalnationsuremarketpaperlunartestbehaveoutputunawaresilverriskfieldclapabandongarment
+
+```
+
+```java tab="Java"
+package com.algorand.Tutorials;
+import com.algorand.algosdk.account.Account;
+import com.algorand.algosdk.crypto.Address;
+public class CreateNewAccounts {
+    public static void main(final String args[]) throws Exception {
+        // Create a random new account
+        Account act1 = new Account();
+        // Get the new account address
+        Address addr1 = act1.getAddress();
+        // Get the backup phrase
+        String backup1 = act1.toMnemonic();
+        System.out.println("Account Address 1: " + addr1.toString());
+        System.out.println("Mnemonic 1: " + backup1);
+
+        // Create a random new account
+        Account act2 = new Account();
+        // Get the new account address
+        Address addr2 = act2.getAddress();
+        // Get the backup phrase
+        String backup2 = act2.toMnemonic();
+        System.out.println("Account Address 2: " + addr2.toString());
+        System.out.println("Mnemonic 2: " + backup2);      
+
+        // Create a random new account
+        Account act3 = new Account();
+        // Get the new account address
+        Address addr3 = act3.getAddress();
+        // Get the backup phrase
+        String backup3 = act3.toMnemonic();
+        System.out.println("Account Address 3: " + addr3.toString());
+        System.out.println("Mnemonic 2: " + backup3);
+        // Terminal output should look similar to this...@interface
+        // Account Address 1: OD7CDZCONULSLN2I4DN4IVAWQQPA75GH3SP443Q2DJ5BGOVKAGDWLIZI4M
+        // Mnemonic 1: country youth visit sniff among believe toward spin blade woman gasp lawn else divert ignore entry zero super middle depart kit seek crunch abandon notice
+        // Account Address 2: PEJ6HCT4BK7SAZDQIHRHXHLNK2O63IGSZZH4RJC7Z2N2BW7CKVCY5TKJN4
+        // Mnemonic 2: leaf sure bar phone purity soccer lion edit page multiply kiss verb blade ginger twice type rescue tunnel color unaware dial angry path abstract toast
+        // Account Address 3: 2IPLPISTLT4GMREDU6HQO7BKZC6R4N2QGTVKBHDGTJM7O3RNXV6SDSZA3U
+        // Mnemonic 2: double black donate deposit awesome eight lawn rug ugly portion inmate pause spoon parrot traffic blue useful note grow crop feed prize note absent relief 
+    }
+
+}
+```
+
+```go tab="Go"
+package main
+
+import (
+	json "encoding/json"
+	"fmt"
+
+	"github.com/algorand/go-algorand-sdk/crypto"
+	"github.com/algorand/go-algorand-sdk/mnemonic"
+)
+
+// PrettyPrint prints Go structs
+func PrettyPrint(data interface{}) {
+	var p []byte
+	//    var err := error
+	p, err := json.MarshalIndent(data, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("%s \n", p)
+}
+
+func main() {
+	account1 := crypto.GenerateAccount()
+	account2 := crypto.GenerateAccount()
+	account3 := crypto.GenerateAccount()
+	address1 := account1.Address.String()
+	address2 := account2.Address.String()
+	address3 := account3.Address.String()
+	mnemonic1, err := mnemonic.FromPrivateKey(account1.PrivateKey)
+	if err != nil {
+		return
+	}
+	mnemonic2, err := mnemonic.FromPrivateKey(account2.PrivateKey)
+	if err != nil {
+		return
+	}
+	mnemonic3, err := mnemonic.FromPrivateKey(account3.PrivateKey)
+	if err != nil {
+		return
+	}
+
+	fmt.Println("Account 1 ")
+	PrettyPrint(address1)
+	PrettyPrint(mnemonic1)
+	fmt.Println("Account 2")
+	PrettyPrint(address2)
+	PrettyPrint(mnemonic2)
+	fmt.Println("Account 3")
+	PrettyPrint(address3)
+	PrettyPrint(mnemonic3)
+
+}
+
+// Terminal output should look similar to this...
+// Account 1
+// "E4Y5SNF3GAMARZ46YFX2YYSOY3YNDIKASMDMVEY3353L5ENKEPREUK2XFU"
+// "under supreme boil forward stairs away permit tray story embody mansion spend roast item unable smoke nation viable fat ethics virtual later evoke absent cereal"
+// Account 2
+// "NOMYOGSSDMXRG6DAOWYBXQZ4Z2KJ6ACKMXFELS4HFAHZV4SAWI5FNKMWPA"
+// "plate wear guess dismiss wheat faith chunk rocket private sauce pig post audit hero impact minimum grocery flip alpha pride almost bone gather abandon win"
+// Account 3
+// "JRH3Z4UR6JEH7WMWZ57Y6ARZRJ2CNYGSQASH3IUSZ7P46UEJQLTJN5EVRI"
+// "regret undo below degree rice margin borrow inflict moment advice desert column plastic peanut lamp solve jacket inspire pepper field glow borrow glimpse ability hobby"
+ 
+
+```
+
+
+Step 1B Setup Accounts, Utility Functions and Tools
+--------------------------------------------------
+
+This tutorial will use three TestNet accounts that have been pre-created in Step 1A. Be sure to dispense Algos to these accounts before continuing, using the TestNet Dispenser.
+
+The TestNet dispenser is located here:
+<https://bank.testnet.algorand.network/>
+
+The accounts used in this tutorial are: (yours will be different)
+
+Account 1
+`THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM`
+
+Account 2
+`AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU`
+
+Account 3
+`3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU`
+
+!!! info
+    You may want to verify account information periodically as well as transactions
+    with asset information during the course of this tutorial. You can use either
+    the [Algo TestNet Explorer](https://testnet.algoexplorer.io/) or use the Purestake's [Goalseeker](https://goalseeker.purestake.io/algorand/testnet), which also
+    facilitates search by asset ID.
+
+![Figure Step 1-1 Use Purestake’s [Goalseeker](https://goalseeker.purestake.io/algorand/testnet) to search on Address, Transaction, Block or AssetID](../imgs/TutorialASA-01.png)
+
+<!-- <center>![Goalseeker](../imgs/TutorialASA-01.png)</center>
+<center>**Figure Step 1-1** Use Purestake’s Goalseeker to search Address,
+Transaction, Block or AssetID.</center> -->
+
+The tutorial code below is separated into snippets categorized by ASA core functions, but is laid out in order and should be coded as a single script for each respective language. 
+
+Create an empty code file for desired language of choice (TutorialASA.js, TutorialASA.py, TutorialASA.java, or TutorialASA.go). Then simply copy the code below and paste into the empty file. Then append the each snippet after the last line of code in the prior step as you read through this tutorial.
 
 ```javascript tab="JavaScript"
 
@@ -114,18 +367,14 @@ break;
 }
 };
 
-// Recover accounts used in example
+// Recover accounts created in Step 1A
+// paste in mnemonic phrases here for each account
 
-var account1_mnemonic = "portion never forward pill lunch organ biology" +
-" weird catch curve isolate plug innocent skin grunt" +
-" bounce clown mercy hole eagle soul chunk type absorb trim";
-var account2_mnemonic = "place blouse sad pigeon wing warrior wild script" +
-" problem team blouse camp soldier breeze twist mother" +
-" vanish public glass code arrow execute convince ability" +
-" there";
-var account3_mnemonic = "image travel claw climb bottom spot path roast" +
-" century also task cherry address curious save item" +
-" clean theme amateur loyal apart hybrid steak about blanket"
+var account1_mnemonic = "PASTE your phrase for account 1 from Step 1A";
+var account2_mnemonic = "PASTE your phrase for account 2 from Step 1A";
+var account3_mnemonic = "PASTE your phrase for account 3 from Step 1A"
+
+
 var recoveredAccount1 = algosdk.mnemonicToSecretKey(account1_mnemonic);
 var recoveredAccount2 = algosdk.mnemonicToSecretKey(account2_mnemonic);
 var recoveredAccount3 = algosdk.mnemonicToSecretKey(account3_mnemonic);
@@ -145,10 +394,10 @@ let algodclient = new algosdk.Algod(token, server, port);
 import json
 from algosdk import account, algod, mnemonic, transaction
 # Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
-# Change these values if you want to use different accounts.
-mnemonic1 = "portion never forward pill lunch organ biology weird catch curve isolate plug innocent skin grunt bounce clown mercy hole eagle soul chunk type absorb trim"
-mnemonic2 = "place blouse sad pigeon wing warrior wild script problem team blouse camp soldier breeze twist mother vanish public glass code arrow execute convince ability there"
-mnemonic3 = "image travel claw climb bottom spot path roast century also task cherry address curious save item clean theme amateur loyal apart hybrid steak about blanket"
+# Change these values with the mnemonics from Step 1A
+mnemonic1 = "PASTE your phrase for account 1 from Step 1A"
+mnemonic2 = "PASTE your phrase for account 2 from Step 1A"
+mnemonic3 = "PASTE your phrase for account 3 from Step 1A"
 
 # For ease of reference, add account public and private keys to
 # an accounts dict.
@@ -299,15 +548,13 @@ AlgodApi algodApiInstance = new AlgodApi(client);
 // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
 // These three accounts are for testing purposes
 
-final String account1_mnemonic = "portion never forward pill lunch organ biology"
-\+ " weird catch curve isolate plug innocent skin grunt"
-\+ " bounce clown mercy hole eagle soul chunk type absorb trim";
-final String account2_mnemonic = "place blouse sad pigeon wing warrior wild script"
-\+ " problem team blouse camp soldier breeze twist mother"
-\+ " vanish public glass code arrow execute convince ability" + " there";
-final String account3_mnemonic = "image travel claw climb bottom spot path roast"
-\+ "century also task cherry address curious save item "
-\+ "clean theme amateur loyal apart hybrid steak about blanket";
+// Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
+// These three accounts are for testing purposes
+// Paste in phrase from Step 1A
+final String account1_mnemonic = "PASTE your phrase for account 1 from Step 1A";
+final String account2_mnemonic = "PASTE your phrase for account 2 from Step 1A";
+final String account3_mnemonic = "PASTE your phrase for account 3 from Step 1A";
+
 Account acct1 = new Account(account1_mnemonic);
 Account acct2 = new Account(account2_mnemonic);
 Account acct3 = new Account(account3_mnemonic);
@@ -361,16 +608,18 @@ var txHeaders = append([]\*algod.Header{}, &algod.Header{"Content-Type","applica
 // Accounts to be used through examples
 func loadAccounts() (map[int][]byte, map[int]string) {
 // Shown for demonstration purposes. NEVER reveal secret mnemonics in practice.
-// Change these values if you want to use different accounts.
-var pks = map[int]string{
-1: "THQHGD4HEESOPSJJYYF34MWKOI57HXBX4XR63EPBKCWPOJG5KUPDJ7QJCM",
-2: "AJNNFQN7DSR7QEY766V7JDG35OPM53ZSNF7CU264AWOOUGSZBMLMSKCRIU",
-3: "3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU",
+// Change these values to uese the accounts created in Step 1A.
+    var pks = map[int]string{
+    1: "Account Address 1 from Step 1A",
+    2: "Account Address 2 from Step 1A",
+    3: "Account Address 3 from Step 1A",
 }
 
-mnemonic1 := "portion never forward pill lunch organ biology weird catch curve isolate plug innocent skin grunt bounce clown mercy hole eagle soul chunk type absorb trim"
-mnemonic2 := "place blouse sad pigeon wing warrior wild script problem team blouse camp soldier breeze twist mother vanish public glass code arrow execute convince ability there"
-mnemonic3 := "image travel claw climb bottom spot path roast century also task cherry address curious save item clean theme amateur loyal apart hybrid steak about blanket"
+// Paste in mnemonic phrases for all three accounts from Step 1A
+mnemonic1 := "PASTE your phrase for account 1 from Step 1A"
+mnemonic2 := "PASTE your phrase for account 2 from Step 1A"
+mnemonic3 := "PASTE your phrase for account 2 from Step 1A"
+
 mnemonics := []string{mnemonic1, mnemonic2, mnemonic3}
 var sks = make(map[int][]byte)
 for i, m := range mnemonics {
@@ -466,11 +715,13 @@ Step 2 Create a New Asset
 Account 1 creates an asset called latinum and sets Account 2 as the manager, reserve, freeze, and clawback address.
 
 !!! note
-	With the **Go** code solution, you will need to paste this snippet before the final curly brace ```}``` and uncommnet the import libraries at the top as needed.
+	With the **Go** code solution, paste this snippet before the final curly brace `}` and uncommnet the import libraries at the top as needed.
     
-    With the **Java** code solution, you will need to paste this snippet at the end of the ```main``` function, before the final two curly braces ```}}```
+    With the **Java** code solution, paste this snippet at the end of the `main` function, before the final two curly braces `}}`
+
 
 ```javascript tab="JavaScript"
+// JavaScript
 (async () => {
     // Asset Creation:
     // The first transaciton is to create a new asset
