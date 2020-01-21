@@ -1,40 +1,115 @@
 Tutorial – Algorand Standard Assets (ASA)
 =========================================
 
-The Algorand platform is a general-purpose economic exchange system which
+The Algorand platform is a general-purpose economic exchange system that
 represents an extremely broad market. A given platform’s attractiveness and
 effectiveness as a means of economic exchange can be defined by the combination
 of what you can own and how you can transact.
 
 Algorand Standard Assets represents Algorand’s ability to digitize any asset and
-have both it and its ownership represented on chain. These assets could be
-fungible (for example: currencies, stable coins, loyalty points, system credits,
-in-game points, etc) or non-fungible (for example: real estate, collectables,
-supply chain, in-game items, tickets, etc). In addition, our functionality
-allows restrictions to be placed on the assets where needed (for example:
-securities, certifications, compliance, etc).
+have both it and its ownership represented on-chain. 
 
-Algorand has implemented named assets as a truly layer 1 asset. This allows any
-asset created on Algorand to enjoy:
+These assets could be for:
+
+Fungible 
+
+* currencies 
+* stable coins 
+* loyalty points 
+* system credits
+* in-game points
+
+Non-Fungible
+
+* real estate 
+* collectibles
+* supply chain 
+* in-game items 
+* tickets
+
+Also, our functionality
+allows restrictions to be placed on the assets where needed 
+
+* securities
+* certifications 
+* compliance
+
+Algorand has implemented named assets as a truly layer 1 asset. This allows Algorad Standard 
+Assets on Algorand blockchain to enjoy:
 
 **Increased security** - New assets will enjoy the same security and safety as
-Algos, the native currency on Algorand
+Algos, the native currency on Algorand.
 
 **Inherent compatibility** - Apps that support any Algorand asset will support
-all Algorand assets
+all Algorand assets.
 
 **High ease of use** - Create your asset with a single transaction to the
-network
+network.
 
 
-Step 1A - Create 3 Accounts and add Algos to the Accounts
+Step 1 - Tools for Creating Accounts, Sending Algos, and Code Utility Functions
 --------------------------------------------------
 
-Assets are created at the account level. Each account can have up to 1000 assets for creator accounts as well as for consumer accounts. So, before starting the ASA tutorial, 3 new accounts will be created for this step for ASA transactions. Once created, copy off the account mnumonic and account address values.  
+Assets are created at the account level. Each account can have up to 1000 assets for creator accounts as well as for consumer accounts. So, before starting the ASA tutorial, 3 new accounts will be created for this step for ASA transactions. Once created, copy off the account mnemonic and account address values.  
 
-**Task 1A-1** Create an empty code file for desired language of choice (CreateNewAccounts.js, CreateNewAccounts.py, CreateNewAccounts.java, or CreateNewAccounts.go). Then simply copy the and insert the snippet. Update the node token and url, and run. Then copy off the account addresses and mnumonics. In Step 1B, we will paste those into the TutorialASA code and recover the account using the mnemonics created in this step. Mnumonics are for demonstration purposes. **NEVER** reveal secret mnemonics in practice.
+**Task 1-1** Download/Clone the completed solution
 
-In order to run ASA transactions, or any transactions for that matter, the accounts need to have TestNet Algo funds. Load all 3 accounts from the Algorand TestNet Dispenser which is located here: <https://bank.testnet.algorand.network/>
+Download the code here: [https:/
+/github.com/algorand-devrel/ASA-Tutorial](https://github.com/algorand-devrel/ASA-Tutorial)
+
+
+Examples in this tutorial use VS Code. 
+If using for the first time, or you are new to debugging in VS Code follow these steps:
+
+Download VS Code here.
+https://code.visualstudio.com/Download
+
+See debugging in VS Code here:
+https://code.visualstudio.com/docs/editor/debugging
+
+See extensions and language install for VS Code here.
+https://code.visualstudio.com/docs/languages/overview
+
+
+
+<!-- <center>![Contract Account](../imgs/TutorialASA-04.png)</center>
+<center>*TEAL Contract Account*</center> -->
+
+In the downloaded code, right-click on the 'completed code' folder and select Reveal in Finder/Explorer.
+
+![Figure Step 1-1 VS Code Extensions for Java](../imgs/TutorialASA-01.png)
+
+**Figure Step 1-1** Open the folder 'completed code' in Finder or Explorer.
+
+Right-click on the desired workspace, Java, JavaScript, Go, Python or C# and open with VS Code. 
+
+![Figure Step 1-2 open workspace with VS Code](../imgs/TutorialASA-02.png)
+
+**Figure Step 1-2** Open the workspace with VS Code.
+
+The debug configuration drop down will be different for each language but will be similar to run/debug the current program. 
+
+JavaScript will look like this:
+
+![Figure Step 1-3 JavaScript debug configuration in VS Code](../imgs/TutorialASA-03.png)
+
+**Figure Step 1-3** Select desired debug option in JavaScript.
+
+In the other languages it will look similar to this:
+
+![Figure Step 1-4 other debug configurations VS Code](../imgs/TutorialASA-04.png)
+
+**Figure Step 1-4** Select desired debug option in other languages.
+
+
+
+**Task 1-2** Create files to generate new accounts.
+
+In the same folder as the completed solution code for your language, create an empty code file for the desired language of choice (myCreateNewAccounts.js, myCreateNewAccounts.py, myCreateNewAccounts.java, or myCreateNewAccounts.go). Then simply copy the and insert the snippet from below. Update the node token URL, and run. Then copy off the account addresses and mnemonics. We will paste those into the TutorialASA code and recover the account using the mnemonics created in the next task. Mnemonics are for demonstration purposes. **NEVER** reveal secret mnemonics in practice.
+
+To run ASA transactions or any transactions for that matter, the accounts need to have TestNet Algo funds. **_Load all 3 accounts_** from the Algorand TestNet Dispenser which is located here: <https://bank.testnet.algorand.network/>
+
+
 
 !!! info
     See the appropriate GitHub repository for installing the SDKs:
@@ -47,29 +122,38 @@ In order to run ASA transactions, or any transactions for that matter, the accou
 
     [Go Lang](https://github.com/algorand/go-algorand-sdk)
 
+    Community supported:
+    [C#](https://github.com/RileyGe/dotnet-algorand-sdk)
 
 !!! info
-    If you do not have a node setup, see these [instructions](https://developer.algorand.org/docs/introduction-installing-node). Also, another alternative is to use [PureStake](https://www.purestake.com/algorand-api).
+    Setting up your node is not required for this tutorial. A node is required somewhere, however, and there are a few options below. 
+    
+    See these [instructions to set up a node](https://developer.algorand.org/docs/introduction-installing-node). A new node could take several hours to sync. Currently, node install is supported for macOS, Ubuntu and other flavors of Linux. 
+    
+    If you are using a Windows 10 machine or you do not want to setup your own node above,  can still do this tutorial using one of the following alternatives:
+    
+    A) [PureStake](https://www.purestake.com/algorand-api).
+
+    B) [The Sandbox](https://github.com/algorand/sandbox).
+
+    C) Use a standup instance: 
+    
+    If you are doing this tutorial at a Hackathon or a hands on Workshop, access a standup instance has been set up for this purpose. Use the following  token and address. (the solutuion code has these values as a default):
+
+    token: "ef920e2e7e002953f4b29a8af720efe8e4ecc75ff102b165e0472834b25832c1"
+    
+    address: "http://hackathon.algodev.network:9100"
 
 
 ```javascript tab="JavaScript"
-//JavaScript
-const algosdk = require('algosdk');
 
-// This code generates 3 accounts
-// Once created, copy off the values which we will past into the TutorialASA code in the next Step
-// Then, Add funds to all three
+const algosdk = require('algosdk');
+// In order to do this ASA tutorial, we will need to generate 3 accounts
+// once created copy off the values which we will past into the TutorialASA code
+// once created sucessfully, you will need to add funds to all three
 // The Algorand TestNet Dispenser is located here: 
 // https://bank.testnet.algorand.network/
 
-// Retrieve the token, server and port values for your installation in the algod.net
-// and algod.token files within the data directory
-// or use PureStake API service https://www.purestake.com/
-
-// UPDATE THESE VALUES
-const token = "TOKEN";
-const server = "SERVER";
-const port = PORT;
 
 var acct = null;
 
@@ -302,11 +386,11 @@ func main() {
 // mnemonic3 := "broom bid found recall stick gas sample copy network mistake mind relief rely file disorder east asthma program filter hedgehog legal walnut wait about slogan"
 ```
 
+<!-- ```cs tab="CS"
+// https://github.com/RileyGe/dotnet-algorand-sdk/blob/master/sdk-examples/AssetExample.cs
+``` -->
 
-Step 1B Setup Accounts, Utility Functions and Tools
---------------------------------------------------
-
-This tutorial will use three TestNet accounts that have been pre-created in Step 1A. Be sure to dispense Algos to these accounts before continuing, using the TestNet Dispenser.
+This tutorial will use three TestNet accounts that have been pre-created in the above task. Be sure to dispense Algos to these accounts before continuing, using the TestNet Dispenser.
 
 The TestNet dispenser is located here:
 <https://bank.testnet.algorand.network/>
@@ -323,13 +407,12 @@ Account 3
 `3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU`
 
 !!! info
-    You may want to verify account information periodically as well as transactions
-    with asset information during the course of this tutorial. You can use either
+    You may want to verify accrount information periodically as well as transactions with asset information during this tutorial. You can use either
     the [Algo TestNet Explorer](https://testnet.algoexplorer.io/) or use the Purestake's [Goalseeker](https://goalseeker.purestake.io/algorand/testnet), which also
     facilitates search by asset ID.
 
-![Figure Step 1A-1 Use Purestake’s [Goalseeker](https://goalseeker.purestake.io/algorand/testnet) to search on Address, Transaction, Block or AssetID](../imgs/TutorialASA-01.png)
-**Figure Step 1B-1** Purestake’s Goalseeker used to search Address,
+![Figure Step 1A-1 Use Purestake’s [Goalseeker](https://goalseeker.purestake.io/algorand/testnet) to search on Address, Transaction, Block or AssetID](../imgs/TutorialASA-05.png)
+**Figure Step 1-5** Purestake’s Goalseeker used to search Address,
 Transaction, Block or AssetID.
 <!-- <center>![Goalseeker](../imgs/TutorialASA-01.png)</center>
 <center>**Figure Step 1A-1** Use Purestake’s Goalseeker to search Address,
@@ -337,7 +420,9 @@ Transaction, Block or AssetID.</center> -->
 
 The tutorial code below is separated into snippets categorized by ASA core functions and is laid out in order. The solution should be coded as a single script for each respective language. 
 
-**Task 1B-1** Create an empty code file for desired language of choice (TutorialASA.js, TutorialASA.py, TutorialASA.java, or TutorialASA.go). Then simply copy the code below and paste into the empty file. Then append the each snippet after the last line of code in the prior step as you read through this tutorial.
+**Task 1-3**  Create code files for the remainder of the tutorial.
+
+Create an empty code file in the same folder as the completed code for your language of choice (myTutorialASA.js, myTutorialASA.py, myTutorialASA.java, myTutorialASA.go or myTutrorial.cs). Then simply copy the code below and paste into the empty file. Then append each snippet after the last line of code in the prior step as you read through this tutorial.
 
 
 ```javascript tab="JavaScript"
