@@ -87,19 +87,19 @@ Right-click on the desired workspace, Java, JavaScript, Go, Python or C# and ope
 
 **Figure Step 1-2** Open the workspace with VS Code.
 
-The debug configuration drop down will be different for each language but will be similar to run/debug the current program. 
+The debug configuration drop-down will be different for each language but will be similar to run/debug the current program. 
 
 JavaScript will look like this:
 
 ![Figure Step 1-3 JavaScript debug configuration in VS Code](../imgs/TutorialASA-03.png)
 
-**Figure Step 1-3** Select desired debug option in JavaScript.
+**Figure Step 1-3** Select the desired debug option in JavaScript.
 
 In the other languages it will look similar to this:
 
 ![Figure Step 1-4 other debug configurations VS Code](../imgs/TutorialASA-04.png)
 
-**Figure Step 1-4** Select desired debug option in other languages.
+**Figure Step 1-4** Select the desired debug option in other languages.
 
 
 
@@ -125,6 +125,10 @@ To run ASA transactions or any transactions for that matter, the accounts need t
     Community supported:
     [C#](https://github.com/RileyGe/dotnet-algorand-sdk)
 
+    Specifially, here are the [C# Algorand Standard Asset code samples](
+    https://github.com/RileyGe/dotnet-algorand-sdk/blob/master/sdk-examples/AssetExample.cs)
+
+    
 !!! info
     Setting up your node is not required for this tutorial. A node is required somewhere, however, and there are a few options below. 
     
@@ -407,7 +411,7 @@ Account 3
 `3ZQ3SHCYIKSGK7MTZ7PE7S6EDOFWLKDQ6RYYVMT7OHNQ4UJ774LE52AQCU`
 
 !!! info
-    You may want to verify accrount information periodically as well as transactions with asset information during this tutorial. You can use either
+    You may want to verify account information periodically as well as transactions with asset information during this tutorial. You can use either
     the [Algo TestNet Explorer](https://testnet.algoexplorer.io/) or use the Purestake's [Goalseeker](https://goalseeker.purestake.io/algorand/testnet), which also
     facilitates search by asset ID.
 
@@ -421,7 +425,7 @@ Transaction, Block or AssetID.</center> -->
 The tutorial code below is separated into snippets categorized by ASA core functions and is laid out in order. The solution should be coded as a single script for each respective language. 
 
 **Task 1-3**  Create code files for the remainder of the tutorial.
-
+ 
 Create an empty code file in the same folder as the completed code for your language of choice (myTutorialASA.js, myTutorialASA.py, myTutorialASA.java, myTutorialASA.go or myTutrorial.cs). Then simply copy the code below and paste into the empty file. Then append each snippet after the last line of code in the prior step as you read through this tutorial.
 
 
@@ -812,15 +816,15 @@ PrettyPrint(pks)
 Step 2 Create a New Asset
 ---------------------------
 
-The ability to create asserts directly on the blockcahin is an exciting capability of the Algorand Blockchain. Possible uses include currency, game leader boards, points in a loyalty system, shares of an asset, and securities such as stocks, bonds, and derivaties.  
+The ability to create asserts directly on the blockchain is an exciting capability of the Algorand Blockchain. Possible uses include currency, game leader boards, points in a loyalty system, shares of an asset, and securities such as stocks, bonds, and derivatives.  
 
 
 !!!info 
-    The decimals value determines the placement of the decimal. For example, when `decimals = 2`, and the `amount = 1000`, the acatual amount is 10.00. So, when a  transfer of amount of 10 is made, the actual transfer is .10
+    The decimals value determines the placement of the decimal. For example, when `decimals = 2`, and the `amount = 1000`, the actual amount is 10.00. So, when a  transfer of the amount of 10 is made, the actual transfer is .10
 
 
 !!! note
-	With the **Go** code solution, paste this snippet before the final curly brace `}` and uncommnet the import libraries at the top as needed.
+	With the **Go** code solution, paste this snippet before the final curly brace `}` and uncomment the import libraries at the top as needed.
     
     With the **Java** code solution, paste this snippet at the end of the `main` function, before the final two curly braces `}}`
 
@@ -1134,8 +1138,7 @@ except Exception as e:
 
 	// Print asset info for newly created asset.
 	PrettyPrint(assetInfo)
-	// terminal output should look similar to this
-
+	
 	// terminal outout should loiok similar to this
 	// Asset created AssetName: latinum
 	// Transaction ID: 4P4ACUIZTWYGFPSRZ6BPD4P64XZCYN2ZOHO33N4V7TYE2KWWDA4Q
@@ -1159,9 +1162,9 @@ except Exception as e:
 
 Step 3 Configure Asset Manager
 ------------------------------
-Assets can be managed as to which accounts have roles for overall manager, reserve, freeze, and clawback functions. By default all of these roles are set to the creator account. 
+Assets can be managed as to which accounts have roles for the overall manager, reserve, freeze, and clawback functions. By default, all of these roles are set to the creator's account. 
 
-Asset reconfiguration allows the address specified as manager to change any of the special addresses for the asset, such as the reserve address. To keep an address the same, it must be re-specified in each new configuration transaction. Supplying an empty address is the same as turning the associated feature off for this asset. Once a special address is set to the empty address, it can never change again. For example, if an asset configuration transaction specifying clawback="" were issued, the associated asset could never be revoked from asset holders, and clawback="" would be true for all time. The  strictEmptyAddressChecking argument can help with this behavior: when set to its default true, makeAssetConfigTxn will throw an error if any undefined management addresses are passed.
+Asset reconfiguration allows the address specified as a manager to change any of the special addresses for the asset, such as the reserve address. To keep an address the same, it must be re-specified in each new configuration transaction. Supplying an empty address is the same as turning the associated feature off for this asset. Once a special address is set to the empty address, it can never change again. For example, if an asset configuration transaction specifying clawback="" were issued, the associated asset could never be revoked from asset holders, and clawback="" would be true for all time. The strictEmptyAddressChecking argument can help with this behavior: when set to its default true, makeAssetConfigTxn will throw an error if any undefined management addresses are passed.
 
 **Task 3-1** Here, the current manager (Account 2) issues an asset configuration transaction that assigns Account 1 as the new manager.
 
@@ -1615,7 +1618,7 @@ if not holding:
 Step 5 Transfer an Asset
 ------------------------
 
-Transfer an asset allows users to transact with assets, after they have issued asset acceptance transactions. The optional closeRemainderTo argument can be used to stop transacting with a particular asset. Now that the opt-in has been done on a potential receiving accout, assets can be transferred.
+Transfer an asset allows users to transact with assets, after they have issued asset acceptance transactions. The optional closeRemainderTo argument can be used to stop transacting with a particular asset. Now that the opt-in has been done on a potential receiving account, assets can be transferred.
 
 !!!note
     A frozen account can always close out to the asset creator.
@@ -2213,7 +2216,7 @@ print(json.dumps(account_info['assets'][str(asset_id)], indent=4))
 Step 8 Destroy an Asset
 -----------------------
 
-Asset destruction allows the creator to remove the asset from the ledger, if all outstanding assets are held by the creator. 
+Asset destruction allows the creator to remove the asset from the ledger if all outstanding assets are held by the creator. 
 
 **Task 8-1** With all assets back in the creator's account, the manager (Account 1) destroys the asset.
 
@@ -2393,7 +2396,7 @@ except Exception as e:
 Conclusion
 ----------
 
-ASA is a very powerful layer 1 feature of the Algorand Blockchain. We created an asset in this tutotial and showed how to do the following functions:
+ASA is a very powerful layer 1 feature of the Algorand Blockchain. We created an asset in this tutorial and showed how to do the following functions:
 
 * Create
 * Opt-In
@@ -2403,4 +2406,4 @@ ASA is a very powerful layer 1 feature of the Algorand Blockchain. We created an
 * Revoke
 * Destroy
 
-Source code for the completed solution can be found here<LINK>.
+Here is the [source code for the completed solution.](https://github.com/algorand-devrel/ASA-Tutorial)
