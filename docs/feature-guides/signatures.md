@@ -2,7 +2,7 @@ title: Authorizing Transactions
 
 In the [Transactions Guide](./transactions.md), you learned how to construct a transaction and in this section, you will learn how to authorize it. 
 
-Before a transaction is sent to the network, it must first be authorized by the [sender](../reference-docs/transactions.md#sender). Authorization occurs through the addition of a **signature** to the transaction object. Specifically, a transaction object, when signed, is wrapped in a [`SignedTxn`](./reference-docs/transactions.md#signed-transaction) object that includes the [transaction](../reference-docs/transactions.md#txn) and a type of [signature](../reference-docs/transactions.md#sig). 
+Before a transaction is sent to the network, it must first be authorized by the [sender](../reference-docs/transactions.md#sender). Authorization occurs through the addition of a **signature** to the transaction object. Specifically, a transaction object, when signed, is wrapped in a [`SignedTxn`](../reference-docs/transactions.md#signed-transaction) object that includes the [transaction](../reference-docs/transactions.md#txn) and a type of [signature](../reference-docs/transactions.md#sig). 
 
 There are three types of signatures:
 
@@ -519,7 +519,7 @@ $ algokey multisig --txfile=multisig2.txn --outfile=multisig2.stxn -m <25-word-m
 
 Logic Signatures (or LogicSigs) authorize transactions associated with an Algorand Smart Contract. Logic signatures are added to transactions to authorize spends from a [Contract Account](./asc1/modes.md#contract-account) or from a [Delegated Account](./asc1/modes.md#delegated-account).
 
-A full explanation of Logic Signatures can be found in the [Algorand Smart Contract Usage Modes Guide](./asc1/modes/#logic-signatures).
+A full explanation of Logic Signatures can be found in the [Algorand Smart Contract Usage Modes Guide](../asc1/modes/#logic-signatures).
 
 **Related How-To**
 

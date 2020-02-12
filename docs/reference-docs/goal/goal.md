@@ -56,8 +56,8 @@ goal [flags]
 * [goal logging](../logging/logging/)	 - Control and manage Algorand logging
 * [goal network](../network/network/)	 - Create and manage private, multi-node, locally-hosted networks
 * [goal node](../node/node/)	 - Manage a specified algorand node
-* [goal report](../report/)	 - 
-* [goal version](../version/).
+* [goal report](../report/)	 - Produces report helpful for debugging
+* [goal version](../version/) - The current version of the Algorand daemon (algod)
 * [goal wallet](../wallet/wallet/)	 - Manage wallets: encrypted collections of Algorand account keys.
 
 

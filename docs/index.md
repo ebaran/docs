@@ -31,7 +31,7 @@ title: Algorand Developer Docs
 <div class="homepage-cards">
   <div class="homepage-card">
     <span class="server-icon"></span>
-    <a href="../docs/network-participation/run-a-node/types/" class="card-title">Run a Node</a>
+    <a href="./network-participation/run-a-node/types/" class="card-title">Run a Node</a>
     <div class="card-description">
     Install, configure, and run a node.
     </div>
