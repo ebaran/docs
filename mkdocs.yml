@@ -79,7 +79,7 @@ nav:
   - Tutorials:
     - Example: 'tutorials/example.md'
     - ASA: 'tutorials/TutorialASA.md'
-  
+    - VS Code: 'tutorials/vscode.md'
 
 theme: 
     name: material
