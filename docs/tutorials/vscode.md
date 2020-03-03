@@ -1,21 +1,47 @@
-Using Visual Studio (VS) Code for Debugging and Editing
 
-Estimated Time: 20 Minutes
+---
+title: Using VS Code
+---
 
-Preqreusites for JavaScript debugging:
+Time Estimate: 15 Minutes
+
+Level: Beginner
+
+# Summary
+Being able to debug is a great tool when learning new programming content. This tutorial will facilitate how to debug using Visual Studio (VS) Code, which can be used with all the code samples on the [Algorand Developer Docs Portal](https://developer.algorand.org/docs/). Other debuggers can also be used. If you are new to debugging, VS Code is the most popular tool. It supports many programming languages, is quick to load and has a [wealth of documentation and extensions](https://code.visualstudio.com/Docs).
+
+# Requirements
+
+For JavaScript debugging:
 
 1) Install [Node.js](https://nodejs.org/en/) 
 
-2) The Chrome debugger extension used in this Task 4, requires you to be serving your web application from local web server, which is started from either a VS Code task or from your command-line. 
+2) The Chrome debugger extension requires you to be serving your web application from a local web server, which is started from either a VS Code task or your command-line. This extension is not required if just debugging a stand alone JavaScript file. 
 
-VS Code is available on all major platforms including Mac, Windows, and Linux. VS Code can take on most of the tasks of an IDE with the right configuration and plugin library. [VS Code is open source](https://github.com/Microsoft/vscode).
+# Background
 
-## Step 1 Download VS Code
+VS Code is available on all major platforms. VS Code can take on most of the tasks of an Integrated Development Environment (IDE) with the right configuration and plugin library extension. [VS Code is open source](https://github.com/Microsoft/vscode).
+
+# Main Languages
+
+Extensions are available in most development languages for VS Code. Specific install instuctions are in Step 2 below. For general information see: [Java](https://code.visualstudio.com/docs/languages/java), [JavaScript](https://code.visualstudio.com/docs/languages/javascript), [Go](https://code.visualstudio.com/docs/languages/go), [Python](https://code.visualstudio.com/docs/languages/python) and [C#](https://code.visualstudio.com/docs/languages/csharp). This tutorial walks through JavaScript examples.
+
+# Additional Languages
+
+See extensions [for VS Code languages here ](https://code.visualstudio.com/docs/languages/overview).
+
+For documentation, several other extensions are available including [Grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly) and [MarkDown (MD)](https://code.visualstudio.com/docs/languages/markdown). 
+
+
+# VS Code
+Visual Studio Code is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. It comes with built-in support for JavaScript, TypeScript and Node.js and has a rich ecosystem of extensions for other languages (such as C++, C#, Java, Python, PHP, Go) and runtimes (such as .NET and Unity). 
+
+## 1. Download VS Code
 Download VS Code from this site https://code.visualstudio.com/Download
 
-## Step 2 Install Extensions
+## 2. Install Extensions
 
-Open VS Code. Go to the Extensions view (⇧⌘X).
+Open VS Code. Go to the Extensions view.
 Filter the extensions list by typing your programming language of choice, such as Java,  and you will see all related extensions.
 
 ![Filter Extensions](../imgs/VSCode-00.png)
@@ -24,7 +50,7 @@ Figure 2-1 Java Extension Pack
 
 Java:
 
-To help set up Java on VS Code, search for Java Extension Pack. This contains the most popular extensions for most Java developers:
+To help set up Java on VS Code, search for [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack). This contains the most popular extensions for most Java developers:
 
 * Language Support for Java(TM) by Red Hat
 * Debugger for Java
@@ -43,21 +69,23 @@ Go: Install [Microsoft's Go Extension](https://marketplace.visualstudio.com/item
 
 C#: Install [Microsoft's C# Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
 
-Extensions are available in most development languages for VS Code. See infromation about these languages including: [Java](https://code.visualstudio.com/docs/languages/java), [JavaScript](https://code.visualstudio.com/docs/languages/javascript), [Go](https://code.visualstudio.com/docs/languages/go), [Python](https://code.visualstudio.com/docs/languages/python) and [C#](https://code.visualstudio.com/docs/languages/csharp). For documentation, several other extensions are available including [Grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly) and [MarkDown (MD)](https://code.visualstudio.com/docs/languages/markdown). See extensions [for VS Code languages here ](https://code.visualstudio.com/docs/languages/overview).
 
-## Step 3 Debugging with VS Code
+## 3. Debugging with VS Code
 
 If you are interested in setting up debugging in VS Code read this:
-https://code.visualstudio.com/docs/editor/debugging
+<https://code.visualstudio.com/docs/editor/debugging>
 
-## Step 4 Debugging JavaScript with VS Code sample
+Keyboard shortcuts and Keymap extensions, which match other editors, are available here:
+<https://code.visualstudio.com/docs/getstarted/keybindings>
+
+## 4. Debugging JavaScript with VS Code samples
  
-
-In this step, setting up a debug session for a JavaScript code is covered for both a standalone code file as well as with a browser. The steps are similar for all languages. 
+In this step, setting up a debug session for a JavaScript code is covered for both a standalone code file as well as through a browser. The steps are similar for all languages. 
 
 **Task 4-1 Standalone**
 
 A) Select the Debug icon on the left 
+
 B) Select from the drop-down menu to Add Config (for current folder)...
 
 ![Select Debug and Add Config](../imgs/VSCode-01.png)
@@ -176,7 +204,7 @@ Figure 4-4 - Select the desired configuration.
 
 Before pressing the run button, place a breakpoint in the code.
 
-To set a breakpoint, simply click on the left margin on the line to break. 
+To set a breakpoint, simply click on the left margin, sometimes referred to as the gutter, on the line to break. 
 
 ![Select the desired configuration](../imgs/VSCode-05.png)
 
@@ -198,7 +226,7 @@ We are now debugging! See Figure 4-7 above.
 
 A) Breakpoint 
 
-B) Hover over a variable with cursor
+B) Hover over a variable with the cursor
 
 C) See the Data Tip with the contents
 
@@ -223,7 +251,7 @@ Install the VS Code Extension for Debugger for Chrome. There are also VS Code Ex
 
 Figure 4-8 - Add a Chrome debugger extension.
 
-Note: The extension operates in two modes - it can launch an instance of Chrome navigated to your app, or it can attach to a running instance of Chrome. Using the url parameter you simply tell VS Code which URL to either open or launch in Chrome.
+Note: The extension operates in two modes - it can launch an instance of Chrome navigated to your app, or it can attach to a running instance of Chrome. Using the URL parameter you simply tell VS Code which URL to either open or launch in Chrome.
 
 Create another debug configuration. This time select the Chrome: Launch option from the list. 
 
@@ -233,24 +261,33 @@ Figure 4-9 - Add configuration for Chrome: Launch.
 
 ![Modify the name](../imgs/VSCode-10.png)
 
-Figure 4-10 - Modify the name to clarify of desired and url to include the page.
+Figure 4-10 - Modify the name to clarify of desired and URL to include the page.
 
 From Terminal, start your localhost in the folder where you are debugging locally.
 
-![Start Localhost](../imgs/VSCode-11.png)
-
-Figure 4-11 - Start localhost
-
 Set a breakpoint in the JavaScript code. Hit the run icon or press F5 to Launch Chrome.
 
-![Launch Chrome](../imgs/VSCode-12.png)
+![Launch Chrome](../imgs/VSCode-11.png)
 
  
-Figure 4-12 - Launch Chrome
+Figure 4-11 - Launch Chrome
 
-You should see your page open. When you Hit a breakpoint you should see the same options to debug as listed in Figure :
+You should see your page open. When you hit a breakpoint you should see the same options to debug as listed in Figure 4-6:
 
 
-Resource Links: [Node.js](https://nodejs.org/en/) 
+# Resource Links 
+
+[Node.js](https://nodejs.org/en/) 
+
+[Introductory VS Code Videos](https://code.visualstudio.com/docs/getstarted/introvideos)
+
+Keyboard Shortcuts: 
+
+[Windows](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
+
+[MacOS](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
+
+[Linux](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf)
+
 
 
